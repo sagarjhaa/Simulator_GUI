@@ -78,7 +78,8 @@ class Polygon:
         """
         area = self.getArea()
         while index < len(self.points)-1:
-            print self.points[index+1].x 
+            #Sagar Jha - Comment added
+            #print self.points[index+1].x 
             curentXBar = (1.0/(6.0*area))*(self.points[index+1].x + self.points[index].x)\
                          *(self.points[index+1].x * self.points[index].y - \
                             self.points[index].x * self.points[index+1].y)
@@ -88,7 +89,8 @@ class Polygon:
                             self.points[index].x * self.points[index+1].y)
             yBar = yBar + curentYBar
             index += 1
-        print 'xBar, yBar', xBar, yBar
+        #Sagar Jha - Comment added
+        #print 'xBar, yBar', xBar, yBar
         centroid = Point(xBar, yBar) 
         return centroid       
     

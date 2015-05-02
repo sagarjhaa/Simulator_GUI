@@ -12,6 +12,10 @@ from main_canvas import MainCanvas
 from scipy import stats
 import math
 
+#Sagar's Edit
+from diffusion.SimulatorExperimence import SimulatorExperimence
+#Added the simulator class
+
 class MainApp(object):
     """
     The MainApp based on TKinter
@@ -30,7 +34,7 @@ class MainApp(object):
     """
     def __init__(self):
         self.root = Tk()
-        self.root.geometry("300x50")
+        self.root.geometry("300x250")
         self.root.title("Shape file Reader")
         self.createMenu()
         self.root.mainloop()
@@ -52,10 +56,20 @@ class MainApp(object):
         self.menubar.add_cascade(label="Attibutes", menu=self.attibmenu,state='disabled')
 
         #Sagar Jha
-        self.menubar.add_cascade(label="Simulator",) # menu=filemenu
-        #
+        self.menubar.add_cascade(label="Simulator",command=self.__simulate) 
+        #Added Simulator 
         
         self.root.config(menu=self.menubar)
+
+    def __simulate(self):
+        """
+        This function will create object of SimulatorExperimence 
+        """
+        self.Sim = SimulatorExperimence()
+        ## Test to check object type       
+        ## print(type(self.Sim))
+        self.Sim.doTest()
+        
         
     def __openShpfile(self):
         """
@@ -92,7 +106,7 @@ class MainApp(object):
     def __addAttribute(self,attributeName):
         """
         Add an attribute to the menu
-        """ 
+        """
         self.attibmenu.add_command(label=attributeName, command=lambda i=attributeName:self.__updateCanvas(i))
         
     def __updateCanvas(self, attributeName):

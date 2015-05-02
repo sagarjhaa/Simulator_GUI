@@ -61,7 +61,7 @@ class MainCanvas(object):
         ratio = ratiox
         if ratio>ratioy:
             ratio = ratioy
-            
+        
         if self.shp_type == SHP_TYPE_POINT:
             self.__drawPoints(minX, minY, maxX, maxY, ratio)
         elif self.shp_type == SHP_TYPE_LINE:
@@ -79,9 +79,9 @@ class MainCanvas(object):
             #define an empty xylist for holding converted coordinates
             x = int((point.x-minX)*ratio)+margin_x/2
             y = int((maxY-point.y)*ratio)+margin_y/2
-            _point = self.mainCanvas.create_oval(x-2, y-2, x+2, y+2, outline=point.color, 
+            _point = self.mainCanvas.create_oval(x-2, y-2, x+2, y+2,outline=point.color,  
                                fill=point.color, width=2, tags = self.datalist[tag_count])
-            self.mainCanvas.tag_bind( _point, '<ButtonPress-1>', self.__showAttriInfo)  
+            self.mainCanvas.tag_bind( _point, '<ButtonPress-1>', self.__showAttriInfo)
             tag_count += 1
         
     def __drawPolylines(self,minX, minY, maxX, maxY,ratio):
@@ -131,6 +131,7 @@ class MainCanvas(object):
                 pointy = int((maxY- point.y)*ratio) + +margin_y/2
                 xylist.append(pointx)
                 xylist.append(pointy)
+                
             """
             polyline.partsIndex is a tuple data type holding the starting points for each
             part. For example, if the polyline.partsIndex of a polyline equals to (0, 4, 9),
@@ -174,18 +175,25 @@ class MainCanvas(object):
                 for m in range(polygon.partsIndex[k], endPointIndex):            
                     tempXYlist.append(xylist[m*2])
                     tempXYlist.append(xylist[m*2+1])
-                startIndex = polygon.partsIndex[k] #start index for our positive polygon. 
+                startIndex = polygon.partsIndex[k] #start index for our positive polygon.                
                 tempPoints = polygon.points[startIndex: endPointIndex]#we get our temppoints to help use create our polygon using positive data
                 newPolygon = Polygon(tempPoints) #here we create our polygons using positve data
                 area = newPolygon.getArea() # Calculate the area
+                
+                #Sagar Jha center added to calculate centroid of polygon
+                center = newPolygon.getCentroid()
+                xCenter = int((center.x -minX)*ratio) + +margin_x/2
+                yCenter = int((maxY- center.y)*ratio) + +margin_y/2
+                
                 if area > 0:
-                    _polygon = self.mainCanvas.create_polygon(tempXYlist,fill=polygon.color,outline="black",tags = self.datalist[tag_count])#creating our polygon outline
+                    _polygon = self.mainCanvas.create_polygon(tempXYlist,fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
+                    _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2)
                 else:
                     # If it is a hole, fill with the same color as the canvas background color 
-                    _polygon = self.mainCanvas.create_polygon(tempXYlist,fill="white",outline="black", tags = self.datalist[tag_count])
+                    _polygon = self.mainCanvas.create_polygon(tempXYlist,fill="black",outline="black", tags = self.datalist[tag_count])
                 self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)            
             tag_count += 1
-                
+
     def __showAttriInfo(self,event):
         """
         Show attribute information of clicked unit
