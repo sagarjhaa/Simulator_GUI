@@ -4,6 +4,9 @@ the canvas to draw the shapefile and interaction with mouse clicks
 from Tkinter import Toplevel, Canvas
 from shp_reader import SHP_TYPE_POINT,SHP_TYPE_LINE,SHP_TYPE_POLYGON,Polygon
 
+import random as rd
+from sag1 import point_inside_polygon
+
 # display parameters
 canvasWidth, canvasHeight,margin_x, margin_y  = 800, 600, 100, 100
     
@@ -131,7 +134,6 @@ class MainCanvas(object):
                 pointy = int((maxY- point.y)*ratio) + +margin_y/2
                 xylist.append(pointx)
                 xylist.append(pointy)
-                
             """
             polyline.partsIndex is a tuple data type holding the starting points for each
             part. For example, if the polyline.partsIndex of a polyline equals to (0, 4, 9),
@@ -171,10 +173,40 @@ class MainCanvas(object):
          
                 #Define a temporary list for holding the part coordinates
                 tempXYlist = []
+                tempXlist = []
+                tempYlist = []
                 #take out points' coordinates for the part and add to the temporary list
                 for m in range(polygon.partsIndex[k], endPointIndex):            
                     tempXYlist.append(xylist[m*2])
                     tempXYlist.append(xylist[m*2+1])
+                    tempXlist.append(xylist[m*2])
+                    tempYlist.append(xylist[m*2+1])
+
+##                print "k",k
+##                print "tempXYlist",tempXYlist
+##                print "tempXlist",tempXlist
+##                print "tempYlist",tempYlist
+
+                xMax = max(tempXlist)
+                xMin = min(tempXlist)
+
+                yMax = max(tempYlist)
+                yMin = min(tempYlist)
+
+                if xMax == xMin:
+                    xMin = xMax - 1
+
+                if yMax == yMin:
+                    yMin = yMax - 1
+
+                tempVar = False
+                while not tempVar:
+                    xPoint = rd.randrange(xMin,xMax)
+                    yPoint = rd.randrange(yMin,yMax)
+                    tempVar =  point_inside_polygon(xPoint,yPoint,tempXYlist)
+                #print xPoint,yPoint
+                
+                
                 startIndex = polygon.partsIndex[k] #start index for our positive polygon.                
                 tempPoints = polygon.points[startIndex: endPointIndex]#we get our temppoints to help use create our polygon using positive data
                 newPolygon = Polygon(tempPoints) #here we create our polygons using positve data
@@ -184,16 +216,19 @@ class MainCanvas(object):
                 center = newPolygon.getCentroid()
                 xCenter = int((center.x -minX)*ratio) + +margin_x/2
                 yCenter = int((maxY- center.y)*ratio) + +margin_y/2
+
+                #print(xCenter,yCenter)
                 
                 if area > 0:
-                    _polygon = self.mainCanvas.create_polygon(tempXYlist,fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
+                    _polygon = self.mainCanvas.create_polygon(tempXYlist,activefill="blue",fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
                     _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2)
+                    _oval    = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
                 else:
                     # If it is a hole, fill with the same color as the canvas background color 
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,fill="black",outline="black", tags = self.datalist[tag_count])
                 self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)            
             tag_count += 1
-
+            #break
     def __showAttriInfo(self,event):
         """
         Show attribute information of clicked unit

@@ -88,48 +88,89 @@ last modified: January 2011
 website: www.zetcode.com
 """
 
-from Tkinter import Tk, Canvas, Frame, BOTH
+##from Tkinter import Tk, Canvas, Frame, BOTH
+##
+##
+##class Example(Frame):
+##  
+##    def __init__(self, parent):
+##        Frame.__init__(self, parent)   
+##         
+##        self.parent = parent        
+##        self.initUI()
+##        
+##    def initUI(self):
+##      
+##        self.parent.title("Shapes")        
+##        self.pack(fill=BOTH, expand=1)
+##        
+##        canvas = Canvas(self)
+##        canvas.create_oval(10, 10, 80, 80, outline="red", 
+##            fill="green", width=2)
+##        canvas.create_oval(110, 10, 210, 80, outline="#f11", 
+##            fill="#1f1", width=2)
+##        canvas.create_rectangle(230, 10, 290, 60, 
+##            outline="#f11", fill="#1f1", width=2)
+##        canvas.create_arc(30, 200, 90, 100, start=0, 
+##            extent=210, outline="#f11", fill="#1f1", width=2)
+##            
+##        points = [150, 100, 250, 100, 250, 180, 210, 
+##            200, 150, 150, 100, 200]
+##        abclist = [456, 124, 446, 50, 483, 51, 483, 65, 499, 65, 524, 66, 526, 123, 514, 123, 513, 160, 485, 159, 460, 158, 459, 146, 457, 134, 456, 126, 456, 124]
+##        canvas.create_polygon(abclist, outline='red',activefill="blue", 
+##            fill='black', width=2)
+##        
+##        canvas.pack(fill=BOTH, expand=1)
+##
+##
+##def main():
+##  
+##    root = Tk()
+##    ex = Example(root)
+##    root.geometry("330x220+300+300")
+##    root.mainloop()  
+##
+##
+##if __name__ == '__main__':
+##    main()
 
 
-class Example(Frame):
-  
-    def __init__(self, parent):
-        Frame.__init__(self, parent)   
-         
-        self.parent = parent        
-        self.initUI()
-        
-    def initUI(self):
-      
-        self.parent.title("Shapes")        
-        self.pack(fill=BOTH, expand=1)
-        
-        canvas = Canvas(self)
-        canvas.create_oval(10, 10, 80, 80, outline="red", 
-            fill="green", width=2)
-        canvas.create_oval(110, 10, 210, 80, outline="#f11", 
-            fill="#1f1", width=2)
-        canvas.create_rectangle(230, 10, 290, 60, 
-            outline="#f11", fill="#1f1", width=2)
-        canvas.create_arc(30, 200, 90, 100, start=0, 
-            extent=210, outline="#f11", fill="#1f1", width=2)
-            
-        points = [150, 100, 250, 100, 250, 180, 210, 
-            200, 150, 150, 100, 200]
-        abclist = [456, 124, 446, 50, 483, 51, 483, 65, 499, 65, 524, 66, 526, 123, 514, 123, 513, 160, 485, 159, 460, 158, 459, 146, 457, 134, 456, 126, 456, 124]
-        canvas.create_polygon(abclist, outline='red',activefill="blue", 
-            fill='black', width=2)
-        
-        canvas.pack(fill=BOTH, expand=1)
 
+# determine if a point is inside a given polygon or not
+# Polygon is a list of (x,y) pairs.
+import random as rd
+def point_inside_polygon(x,y,poly):
 
-def main():
-  
-    root = Tk()
-    ex = Example(root)
-    root.geometry("330x220+300+300")
-    root.mainloop()  
+    n = len(poly)/2
+    inside =False
 
+    p1x = poly[0]
+    p1y = poly[1]
+    #print p1x,p1y
+    for i in range(0,n+1,1):
+        p2x = poly [(i%n)*2]
+        p2y = poly [(i%n)*2 +1]
+##        p2x,p2y = poly[i % n]
+##        print i,i%n,p2x,p2y
+        if y > min(p1y,p2y):
+            if y <= max(p1y,p2y):
+                if x <= max(p1x,p2x):
+                    if p1y != p2y:
+                        xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+                    if p1x == p2x or x <= xinters:
+                        inside = not inside
+        p1x,p1y = p2x,p2y
 
-if __name__ == '__main__':
-    main()
+    return inside
+
+#poly = [456, 124, 446, 50, 483, 51, 483, 65, 499, 65, 524, 66, 526, 123, 514, 123, 513, 160, 485, 159, 460, 158, 459, 146, 457, 134, 456, 126, 456, 124]
+##point = (486, 105)
+####poly = [(456, 124), (446, 50), (483, 51), (483, 65), (499, 65), (524, 66), (526, 123), (514, 123), (513, 160), (485, 159), (460, 158), (459, 146), (457, 134), (456, 126), (456, 124)]
+##tempXlist = [456, 446, 483, 483, 499, 524, 526, 514, 513, 485, 460, 459, 457, 456, 456]
+##tempYlist = [124, 50, 51, 65, 65, 66, 123, 123, 160, 159, 158, 146, 134, 126, 124]
+#maxNo = max(poly)
+#minNo = min(poly)
+#x = rd.randrange(minNo,maxNo)
+#y = rd.randrange(minNo,maxNo)
+
+#print point_inside_polygon(x,y,poly)
