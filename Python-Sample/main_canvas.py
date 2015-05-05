@@ -9,7 +9,7 @@ from sag1 import point_inside_polygon
 
 # display parameters
 canvasWidth, canvasHeight,margin_x, margin_y  = 800, 600, 100, 100
-    
+dict1 = {}
 class MainCanvas(object):
     """
     The shapefile displaying device based on TKinter Canvas
@@ -128,6 +128,7 @@ class MainCanvas(object):
         for polygon in self.shapes:
             #define an empty xylist for holding converted coordinates
             xylist = []
+            
             # loops through each point and calculate the window coordinates, put in xylist
             for point in polygon.points:
                 pointx = int((point.x -minX)*ratio) + +margin_x/2
@@ -164,6 +165,7 @@ class MainCanvas(object):
         
             xylist[m*2+1] would be is y0(when m=0), y1(when m=1), y2(when m=2), y3(when m=3)
             """
+            
             for k in range(polygon.partsNum):
                 #get the end sequence number of points in the part
                 if (k==polygon.partsNum-1):
@@ -200,10 +202,11 @@ class MainCanvas(object):
                     yMin = yMax - 1
 
                 tempVar = False
-                while not tempVar:
-                    xPoint = rd.randrange(xMin,xMax)
-                    yPoint = rd.randrange(yMin,yMax)
-                    tempVar =  point_inside_polygon(xPoint,yPoint,tempXYlist)
+                #while not tempVar:
+                xPoint = rd.randrange(xMin,xMax)
+                yPoint = rd.randrange(yMin,yMax)
+                tempVar =  point_inside_polygon(xPoint,yPoint,tempXYlist)
+                #print tempVar
                 #print xPoint,yPoint
                 
                 
@@ -217,22 +220,34 @@ class MainCanvas(object):
                 xCenter = int((center.x -minX)*ratio) + +margin_x/2
                 yCenter = int((maxY- center.y)*ratio) + +margin_y/2
 
-                #print(xCenter,yCenter)
+                #print area
                 
                 if area > 0:
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,activefill="blue",fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
-                    _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2)
-                    _oval    = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
+                    _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2,tags = center)
+                    dict1[_oval]=[center.x,center.y]
+                    _oval1   = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
                 else:
                     # If it is a hole, fill with the same color as the canvas background color 
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,fill="black",outline="black", tags = self.datalist[tag_count])
-                self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)            
+                self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)
+                self.mainCanvas.tag_bind( _oval, '<ButtonPress-1>', self.__showAttriInfo)
             tag_count += 1
             #break
+        
     def __showAttriInfo(self,event):
         """
         Show attribute information of clicked unit
         """        
-        widget_id=event.widget.find_closest(event.x, event.y) 
-        print "click!!!!", widget_id
-        print self.attributeName+" is: "+self.mainCanvas.gettags(widget_id)[0]
+        widget_id=event.widget.find_closest(event.x, event.y)
+        
+        if widget_id[0] in dict1.keys():
+            print widget_id[0], dict1[widget_id[0]][0],dict1[widget_id[0]][1]
+        else:
+            print "click!!!!", widget_id
+            print self.attributeName+" is: "+self.mainCanvas.gettags(widget_id)[0]
+
+
+
+
+        
