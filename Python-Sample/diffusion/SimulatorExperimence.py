@@ -55,7 +55,7 @@ class SimulatorExperimence(object):
         tests=""
         s=Simulator(nPnt)
         s.genPoints()
-        s.genRandomLinks(nLink*nPnt)
+        s.genRandomLinks(nLink*nPnt) 
         
         f2 = open('doT1pT2p2.txt', 'w')               
         for i in range(0,101):     
