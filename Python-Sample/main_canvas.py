@@ -184,11 +184,6 @@ class MainCanvas(object):
                     tempXlist.append(xylist[m*2])
                     tempYlist.append(xylist[m*2+1])
 
-##                print "k",k
-##                print "tempXYlist",tempXYlist
-##                print "tempXlist",tempXlist
-##                print "tempYlist",tempYlist
-
                 xMax = max(tempXlist)
                 xMin = min(tempXlist)
 
@@ -206,8 +201,6 @@ class MainCanvas(object):
                 xPoint = rd.randrange(xMin,xMax)
                 yPoint = rd.randrange(yMin,yMax)
                 tempVar =  point_inside_polygon(xPoint,yPoint,tempXYlist)
-                #print tempVar
-                #print xPoint,yPoint
                 
                 
                 startIndex = polygon.partsIndex[k] #start index for our positive polygon.                
@@ -219,22 +212,22 @@ class MainCanvas(object):
                 center = newPolygon.getCentroid()
                 xCenter = int((center.x -minX)*ratio) + +margin_x/2
                 yCenter = int((maxY- center.y)*ratio) + +margin_y/2
-
-                #print area
                 
                 if area > 0:
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,activefill="blue",fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
-                    _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2,tags = center)
-                    dict1[_oval]=[center.x,center.y]
-                    _oval1   = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
+                    #print k,_polygon                   
+                    
+                    if k==0:
+                        _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2,tags = center)
+                        dict1[_oval]=[center.x,center.y]
+                        _oval1   = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
                 else:
                     # If it is a hole, fill with the same color as the canvas background color 
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,fill="black",outline="black", tags = self.datalist[tag_count])
                 self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)
                 self.mainCanvas.tag_bind( _oval, '<ButtonPress-1>', self.__showAttriInfo)
             tag_count += 1
-            #break
-        
+            
     def __showAttriInfo(self,event):
         """
         Show attribute information of clicked unit
@@ -246,8 +239,3 @@ class MainCanvas(object):
         else:
             print "click!!!!", widget_id
             print self.attributeName+" is: "+self.mainCanvas.gettags(widget_id)[0]
-
-
-
-
-        
