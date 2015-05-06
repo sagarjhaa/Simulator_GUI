@@ -143,7 +143,7 @@ class MainApp(object):
         except:
             print "non-numeric attribute"
             
-        self.canvas=MainCanvas(self.shapes,self.bbox,self.shp_type,self.root,attributeName,data_list) 
+        self.canvas=MainCanvas(self.shapes,self.bbox,self.shp_type,self.root,attributeName,data_list)
     
 if __name__ == '__main__':
     MainApp()

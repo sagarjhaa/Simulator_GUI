@@ -168,8 +168,8 @@ def point_inside_polygon(x,y,poly):
 #tempYlist = [124, 50, 51, 65, 65, 66, 123, 123, 160, 159, 158, 146, 134, 126, 124]
 ####poly = [(456, 124), (446, 50), (483, 51), (483, 65), (499, 65), (524, 66), (526, 123), (514, 123), (513, 160), (485, 159), (460, 158), (459, 146), (457, 134), (456, 126), (456, 124)]
 
-poly = [200,50,800,50,800,400,200,400]
-tempXlist = [200,800,800,200]
+poly = [100,50,900,50,900,400,100,400]
+tempXlist = [100,900,900,100]
 tempYlist = [50,50,400,400]
 
 XmaxNo = max(tempXlist)
@@ -192,9 +192,9 @@ inside = False
 ##print "X: ",x
 ##print "Y: ",y
 ##print point_inside_polygon(x,y,poly)
-
+PointList = {}
 from Tkinter import *
-
+import random
 master = Tk()
 
 w = Canvas(master, width=1000, height=500)
@@ -202,23 +202,31 @@ w.pack()
 
 w.create_polygon(poly, outline='red', fill='White', width=2)#activefill="blue"
 
-for i in range(50):
+for i in range(6):
     inside = False
     while not inside:
-        x = rd.randrange(XminNo+1,XmaxNo-10)
-        y = rd.randrange(YminNo+1,YmaxNo-10)
+        x = rd.randrange(XminNo+1,XmaxNo)
+        y = rd.randrange(YminNo+1,YmaxNo)
         inside = point_inside_polygon(x,y,poly)
-        print inside
-
-    print "XMax: ",XmaxNo
-    print "XMin: ",XminNo
-    print "YMax: ",YmaxNo
-    print "YMin: ",YminNo
-    print "X: ",x
-    print "Y: ",y
-    print point_inside_polygon(x,y,poly)
-    w.create_oval(x,y, x+5, y+5, outline="#f11", width=2,activefill="green")
+        
+##    print i
+    PointList[i] = [x,y]
+##    print "XMax: ",XmaxNo
+##    print "XMin: ",XminNo
+##    print "YMax: ",YmaxNo
+##    print "YMin: ",YminNo
+##    print "X: ",x
+##    print "Y: ",y
     
+    w.create_oval(x,y, x+10, y+10, outline="#f11", width=2,activefill="green")
+    if i==1:
+        w.create_line(x, y, PointList[0][0], PointList[0][1],fill="red", dash=(4, 4))
+        #w.create_line(0, 100, 200, 0, fill="red", dash=(4, 4))
+    if i>1:
+        j = rd.randrange(i)
+        w.create_line(x, y, PointList[j][0], PointList[j][1],fill="black", dash=(4, 4))
+        
+
 #w.create_line(0, 0, 200, 100)
 #w.create_line(200, 0, 0, 100, fill="red", dash=(4, 4))
 

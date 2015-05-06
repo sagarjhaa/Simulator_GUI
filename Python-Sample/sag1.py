@@ -168,16 +168,16 @@ def point_inside_polygon(x,y,poly):
 #tempYlist = [124, 50, 51, 65, 65, 66, 123, 123, 160, 159, 158, 146, 134, 126, 124]
 ####poly = [(456, 124), (446, 50), (483, 51), (483, 65), (499, 65), (524, 66), (526, 123), (514, 123), (513, 160), (485, 159), (460, 158), (459, 146), (457, 134), (456, 126), (456, 124)]
 
-poly = [200,50,800,50,800,400,200,400]
-tempXlist = [200,800,800,200]
-tempYlist = [50,50,400,400]
-
-XmaxNo = max(tempXlist)
-XminNo = min(tempXlist)
-YmaxNo = max(tempYlist)
-YminNo = min(tempYlist)
-
-inside = False
+##poly = [200,50,800,50,800,400,200,400]
+##tempXlist = [200,800,800,200]
+##tempYlist = [50,50,400,400]
+##
+##XmaxNo = max(tempXlist)
+##XminNo = min(tempXlist)
+##YmaxNo = max(tempYlist)
+##YminNo = min(tempYlist)
+##
+##inside = False
 
 ##while not inside:
 ##    x = rd.randrange(XminNo+1,XmaxNo)
@@ -193,38 +193,38 @@ inside = False
 ##print "Y: ",y
 ##print point_inside_polygon(x,y,poly)
 
-from Tkinter import *
+##from Tkinter import *
+##
+##master = Tk()
+##
+##w = Canvas(master, width=1000, height=500)
+##w.pack()
+##
+##w.create_polygon(poly, outline='red', fill='White', width=2)#activefill="blue"
 
-master = Tk()
-
-w = Canvas(master, width=1000, height=500)
-w.pack()
-
-w.create_polygon(poly, outline='red', fill='White', width=2)#activefill="blue"
-
-for i in range(50):
-    inside = False
-    while not inside:
-        x = rd.randrange(XminNo+1,XmaxNo-10)
-        y = rd.randrange(YminNo+1,YmaxNo-10)
-        inside = point_inside_polygon(x,y,poly)
-        print inside
-
-    print "XMax: ",XmaxNo
-    print "XMin: ",XminNo
-    print "YMax: ",YmaxNo
-    print "YMin: ",YminNo
-    print "X: ",x
-    print "Y: ",y
-    print point_inside_polygon(x,y,poly)
-    w.create_oval(x,y, x+5, y+5, outline="#f11", width=2,activefill="green")
-    
-#w.create_line(0, 0, 200, 100)
-#w.create_line(200, 0, 0, 100, fill="red", dash=(4, 4))
-
-
-
-mainloop()
+##for i in range(50):
+##    inside = False
+##    while not inside:
+##        x = rd.randrange(XminNo+1,XmaxNo-10)
+##        y = rd.randrange(YminNo+1,YmaxNo-10)
+##        inside = point_inside_polygon(x,y,poly)
+##        print inside
+##
+##    print "XMax: ",XmaxNo
+##    print "XMin: ",XminNo
+##    print "YMax: ",YmaxNo
+##    print "YMin: ",YminNo
+##    print "X: ",x
+##    print "Y: ",y
+##    print point_inside_polygon(x,y,poly)
+##    w.create_oval(x,y, x+5, y+5, outline="#f11", width=2,activefill="green")
+##    
+###w.create_line(0, 0, 200, 100)
+###w.create_line(200, 0, 0, 100, fill="red", dash=(4, 4))
+##
+##
+##
+##mainloop()
 
 
 
