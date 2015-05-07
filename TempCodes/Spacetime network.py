@@ -19,14 +19,14 @@ class Network:
         self.canvas = Canvas(self.master,width= 1000,height=600,bg="white")
         self.canvas.grid(row=0,rowspan=3,column=0)
         self.canvas.create_polygon(poly,outline='red',fill='black',width=2)
-
         
-
+        
         XmaxNo = max(tempXlist)
         XminNo = min(tempXlist)
         YmaxNo = max(tempYlist)
         YminNo = min(tempYlist)
-        PointList = {}
+        Nodes = {}
+        Links = {}
         radius = 20
         half_radius = radius/2
         
@@ -36,15 +36,37 @@ class Network:
                 x = rd.randrange(XminNo+1,XmaxNo-radius)
                 y = rd.randrange(YminNo+1,YmaxNo-radius)
                 inside = point_inside_polygon(x,y,poly)
-            PointList[i] = [x,y]
             
-            self.canvas.create_oval(x,y, x+radius, y+radius, outline="#f11", width=2,activefill="green")
+            
+            _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="#f11", width=2,activefill="green")
+            self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
+            Nodes[_oval] = [x,y]
+            Links[_oval] = []
+
+            if i==0:
+                tempid = _oval
             if i==1:
-                self.canvas.create_line(x+half_radius, y+half_radius, PointList[0][0]+half_radius, PointList[0][1]+half_radius,fill="red", dash=(4, 4))
+                Links[_oval].append(0)
+                self.canvas.create_line(x+half_radius, y+half_radius, Nodes[tempid][0]+half_radius, Nodes[tempid][1]+half_radius,fill="red", dash=(4, 4),tags = i)
             if i>1:
-                j = rd.randrange(i)
-                self.canvas.create_line(x+half_radius, y+half_radius, PointList[j][0]+half_radius, PointList[j][1]+half_radius,fill="green", dash=(4, 4))
-         
+                j = rd.choice(Nodes.keys())
+                while j== _oval:
+                    j = rd.choice(Nodes.keys())
+                Links[_oval].append(j)
+                self.canvas.create_line(x+half_radius, y+half_radius, Nodes[j][0]+half_radius, Nodes[j][1]+half_radius,fill="green", dash=(4, 4),tags = i)
+        print Nodes.keys()
+
+    def __showLinkInfo(self,event):
+        widget_id = event.widget.find_closest(event.x,event.y)
+        
+        if widget_id[0]-1 ==1 or widget_id[0]-1 ==2:
+            print "Node is ",widget_id[0]-1
+        else:
+            tempnode = (widget_id[0]/2)
+            widget_id = 2*tempnode - (tempnode -1)
+            print "Node is ",widget_id
+
+        
 class Settings:
     def __init__(self, parent):
 
