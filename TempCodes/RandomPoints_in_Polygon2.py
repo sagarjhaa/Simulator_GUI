@@ -1,4 +1,5 @@
 import random as rd
+import Tkinter as tk
 def point_inside_polygon(x,y,poly):
 
     n = len(poly)/2
@@ -36,10 +37,18 @@ PointList = {}
 from Tkinter import *
 import random
 master = Tk()
-
+master.grid()
 w = Canvas(master, width=1000, height=500)
+w.grid(row=1,rowspan=3,column=0)
+master.rowconfigure(0, weight=1)
+master.columnconfigure(0, weight=1)
 w.pack()
 w.create_polygon(poly, outline='red', fill='White', width=2)
+
+##mainButton2 = tk.Button(master, width=20, text='Print "scale"')
+##mainButton2.grid(row=1, column=1)
+##mainButton = tk.Button(master, width=20, text='Settings')
+##mainButton.grid(row=2, column=1)
 
 for i in range(6):
     inside = False
@@ -55,5 +64,5 @@ for i in range(6):
     if i>1:
         j = rd.randrange(i)
         w.create_line(x, y, PointList[j][0], PointList[j][1],fill="black", dash=(4, 4))
-mainloop()
+master.mainloop()
 
