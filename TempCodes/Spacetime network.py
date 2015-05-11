@@ -83,11 +83,15 @@ class Network:
             print "Node is:",pNode
 
             #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
-
+            Nodes_Id = self.Nodes.keys()
+            for i in range(len(Nodes_Id)):
+                self.canvas.itemconfig(Nodes_Id[i],fill="")
+                
             try:
                 if len(self.Links[widget_id[0]]) > 0:
                     for i in range(len(self.Links[widget_id[0]])):
                         print self.nodeConverter(self.Links[widget_id[0]][i]),"--->",pNode
+                        self.canvas.itemconfig(self.Links[widget_id[0]][i],fill="red")
             except:
                 pass
         
