@@ -7,9 +7,6 @@ poly = [10,10,990,10,990,590,10,590]
 tempXlist = [10,990,990,10]
 tempYlist = [10,10,590,590]
 
-#GNodes = {}
-#GLinks = {}
-
 class Network:
 
     def __init__(self,master=None):
@@ -28,8 +25,6 @@ class Network:
         XminNo = min(tempXlist)
         YmaxNo = max(tempYlist)
         YminNo = min(tempYlist)
-        #Nodes = {}
-        #Links = {}
         self.Nodes = {}
         self.Links = {}
         
@@ -53,13 +48,14 @@ class Network:
             if i==0:
                 tempid = _oval
             if i==1:
-                self.Links[_oval].append(0)
+                #self.Links[_oval].append(0)
+                self.Links[tempid].append(_oval)
                 self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[tempid][0]+half_radius, self.Nodes[tempid][1]+half_radius,fill="red", dash=(4, 4),tags = i)
             if i>1:
                 j = rd.choice(self.Nodes.keys())
                 while j == _oval:
                     j = rd.choice(self.Nodes.keys())
-                self.Links[_oval].append(j)
+                #self.Links[_oval].append(j)
                 self.Links[j].append(_oval) #added
                 self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[j][0]+half_radius, self.Nodes[j][1]+half_radius,fill="green", dash=(4, 4),tags = i)
         #print self.Links
@@ -83,7 +79,7 @@ class Network:
         #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
         
         for i in range(len(self.Links[widget_id[0]])):
-            print pNode,"--->",self.nodeConverter(self.Links[widget_id[0]][i])
+            print self.nodeConverter(self.Links[widget_id[0]][i]),"--->",pNode
     
         
 class Settings:
@@ -111,7 +107,10 @@ class Settings:
         
 def onClick():
     inputDialog = Settings(root)
-    root.wait_window(inputDialog.top)       
+    root.wait_window(inputDialog.top)
+
+def onClick2():
+    pass
 
 def point_inside_polygon(x,y,poly):
     n = len(poly)/2
@@ -141,4 +140,6 @@ root.geometry=("1000x900+0+0")
 MG=Network(root)
 mainButton = tk.Button(root, width=20, text='Settings',command=onClick)
 mainButton.grid(row=1, column=1)
+##mainButton = tk.Button(root, width=20, text='Opinion Leader',command=onClick2)
+##mainButton.grid(row=2, column=1)
 root.mainloop()
