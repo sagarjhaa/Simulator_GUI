@@ -28,8 +28,11 @@ class Network:
         XminNo = min(tempXlist)
         YmaxNo = max(tempYlist)
         YminNo = min(tempYlist)
-        Nodes = {}
-        Links = {}
+        #Nodes = {}
+        #Links = {}
+        self.Nodes = {}
+        self.Links = {}
+        
         radius = 20
         half_radius = radius/2
         
@@ -44,24 +47,33 @@ class Network:
             _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="#f11", width=2,activefill="green")
             #print _oval
             self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
-            Nodes[_oval] = [x,y]
-            Links[_oval] = []
+            #Nodes[_oval] = [x,y]
+            #Links[_oval] = []
+
+            self.Nodes[_oval] = [x,y]
+            self.Links[_oval] = []
 
             if i==0:
                 tempid = _oval
             if i==1:
-                Links[_oval].append(0)
-                self.canvas.create_line(x+half_radius, y+half_radius, Nodes[tempid][0]+half_radius, Nodes[tempid][1]+half_radius,fill="red", dash=(4, 4),tags = i)
+                #Links[_oval].append(0)
+                self.Links[_oval].append(0)
+                #self.canvas.create_line(x+half_radius, y+half_radius, Nodes[tempid][0]+half_radius, Nodes[tempid][1]+half_radius,fill="red", dash=(4, 4),tags = i)
+                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[tempid][0]+half_radius, self.Nodes[tempid][1]+half_radius,fill="red", dash=(4, 4),tags = i)
             if i>1:
-                j = rd.choice(Nodes.keys())
-                while j== _oval:
-                    j = rd.choice(Nodes.keys())
-                Links[_oval].append(j)
-                self.canvas.create_line(x+half_radius, y+half_radius, Nodes[j][0]+half_radius, Nodes[j][1]+half_radius,fill="green", dash=(4, 4),tags = i)
+                #j = rd.choice(Nodes.keys())
+                j = rd.choice(self.Nodes.keys())
+                while j == _oval:
+                    #j = rd.choice(Nodes.keys())
+                    j = rd.choice(self.Nodes.keys())
+                #Links[_oval].append(j)
+                self.Links[_oval].append(j)
+                self.Links[j].append(_oval) #added
+                #self.canvas.create_line(x+half_radius, y+half_radius, Nodes[j][0]+half_radius, Nodes[j][1]+half_radius,fill="green", dash=(4, 4),tags = i)
+                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[j][0]+half_radius, self.Nodes[j][1]+half_radius,fill="green", dash=(4, 4),tags = i)
         #print Nodes.keys()
-        #print Links
-        GLinks = Links.copy()
-        print GLinks
+        print self.Links
+        
                 
     def nodeConverter(self,widget_id):
         
@@ -81,8 +93,8 @@ class Network:
         print "Node is:",pNode
         #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
         
-##        for i in len(GLinks[widget_id[0]]):
-##            print pNode,"--->",self.nodeConverter(GLinks[widget_id[0]][i])
+        for i in range(len(self.Links[widget_id[0]])):
+            print pNode,"--->",self.nodeConverter(self.Links[widget_id[0]][i])
     
         
 class Settings:
