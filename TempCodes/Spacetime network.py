@@ -7,6 +7,9 @@ poly = [10,10,990,10,990,590,10,590]
 tempXlist = [10,990,990,10]
 tempYlist = [10,10,590,590]
 
+#GNodes = {}
+#GLinks = {}
+
 class Network:
 
     def __init__(self,master=None):
@@ -39,6 +42,7 @@ class Network:
             
             
             _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="#f11", width=2,activefill="green")
+            #print _oval
             self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
             Nodes[_oval] = [x,y]
             Links[_oval] = []
@@ -54,18 +58,32 @@ class Network:
                     j = rd.choice(Nodes.keys())
                 Links[_oval].append(j)
                 self.canvas.create_line(x+half_radius, y+half_radius, Nodes[j][0]+half_radius, Nodes[j][1]+half_radius,fill="green", dash=(4, 4),tags = i)
-        print Nodes.keys()
-
-    def __showLinkInfo(self,event):
-        widget_id = event.widget.find_closest(event.x,event.y)
+        #print Nodes.keys()
+        #print Links
+        GLinks = Links.copy()
+        print GLinks
+                
+    def nodeConverter(self,widget_id):
         
-        if widget_id[0]-1 ==1 or widget_id[0]-1 ==2:
-            print "Node is ",widget_id[0]-1
+        if widget_id-1 ==1 or widget_id-1 ==2:
+            return widget_id-1
         else:
-            tempnode = (widget_id[0]/2)
-            widget_id = 2*tempnode - (tempnode -1)
-            print "Node is ",widget_id
+            tempnode = (widget_id/2)
+            widget_id_1 = 2*tempnode - (tempnode -1)
+            return widget_id_1
 
+        
+    def __showLinkInfo(self,event):
+        #global GLinks
+        widget_id = event.widget.find_closest(event.x,event.y)
+
+        pNode = self.nodeConverter(widget_id[0])
+        print "Node is:",pNode
+        #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
+        
+##        for i in len(GLinks[widget_id[0]]):
+##            print pNode,"--->",self.nodeConverter(GLinks[widget_id[0]][i])
+    
         
 class Settings:
     def __init__(self, parent):
@@ -87,8 +105,8 @@ class Settings:
     def change(self,event):
         global scale
         scale = event.widget.get()
-        print scale
-        MG=Network(root) #This just generates a new Demonstrator with original coordinates
+        #print scale
+        MG=Network(root) #This just generates a new Network with original coordinates
         
 def onClick():
     inputDialog = Settings(root)
