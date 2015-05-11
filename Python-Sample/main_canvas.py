@@ -135,6 +135,7 @@ class MainCanvas(object):
                 pointy = int((maxY- point.y)*ratio) + +margin_y/2
                 xylist.append(pointx)
                 xylist.append(pointy)
+            print xylist
             """
             polyline.partsIndex is a tuple data type holding the starting points for each
             part. For example, if the polyline.partsIndex of a polyline equals to (0, 4, 9),
@@ -227,7 +228,7 @@ class MainCanvas(object):
                 self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)
                 self.mainCanvas.tag_bind( _oval, '<ButtonPress-1>', self.__showAttriInfo)
             tag_count += 1
-            
+            break
     def __showAttriInfo(self,event):
         """
         Show attribute information of clicked unit

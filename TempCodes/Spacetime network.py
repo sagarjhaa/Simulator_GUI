@@ -7,6 +7,10 @@ poly = [10,10,990,10,990,590,10,590]
 tempXlist = [10,990,990,10]
 tempYlist = [10,10,590,590]
 
+#poly = [456, 124, 446, 50, 483, 51, 483, 65, 499, 65, 524, 66, 526, 123, 514, 123, 513, 160, 485, 159, 460, 158, 459, 146, 457, 134, 456, 126, 456, 124]
+#tempXlist = [456,446,483,483,499,524,526,514,513,485,460,459,457,456,456]
+#tempYlist = [124,50,51,65,65,66,123,123,160,159,158,146,134,126,124]
+
 class Network:
 
     def __init__(self,master=None):
@@ -62,8 +66,9 @@ class Network:
         
                 
     def nodeConverter(self,widget_id):
-        
-        if widget_id-1 ==1 or widget_id-1 ==2:
+
+        if widget_id-1 ==1:
+            #or widget_id-1 ==2:
             return widget_id-1
         else:
             tempnode = (widget_id/2)
@@ -73,14 +78,18 @@ class Network:
         
     def __showLinkInfo(self,event):
         widget_id = event.widget.find_closest(event.x,event.y)
+        if widget_id[0]  <> 1:
+            pNode = self.nodeConverter(widget_id[0])
+            print "Node is:",pNode
 
-        pNode = self.nodeConverter(widget_id[0])
-        print "Node is:",pNode
-        #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
-        
-        for i in range(len(self.Links[widget_id[0]])):
-            print self.nodeConverter(self.Links[widget_id[0]][i]),"--->",pNode
-    
+            #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
+
+            try:
+                if len(self.Links[widget_id[0]]) > 0:
+                    for i in range(len(self.Links[widget_id[0]])):
+                        print self.nodeConverter(self.Links[widget_id[0]][i]),"--->",pNode
+            except:
+                pass
         
 class Settings:
     def __init__(self, parent):
