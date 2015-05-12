@@ -44,8 +44,8 @@ class SimulatorExperimence(object):
         #self.doT1P()
         #self.doT2Number()
         #self.doT2P()
-       # self.doT1nT2n()
-        self.doT1pT2p()
+        self.doT1nT2n()
+        #self.doT1pT2p()
 
     def doT1pT2p(self):
         nPnt=1000
@@ -144,7 +144,7 @@ class SimulatorExperimence(object):
         return 
     def MutiTimesNoGen(self,s,nOrgin,nLink1,nLink2,p1,p2):        
         nSteps=0;
-        for i in range(100):
+        for i in range(2):   #Change this to 100 to take time
             s.setPointType(nOrgin,nLink1,nLink2,p1,p2)                    
             s.goSimulate("a")
             nSteps=nSteps+s.getStepNum()
