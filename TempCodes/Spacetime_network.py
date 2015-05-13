@@ -2,6 +2,7 @@ from Tkinter import *
 import Tkinter as tk
 import random as rd
 
+Communities = 4
 scale = 5
 #poly = [10,10,990,10,990,590,10,590]
 #tempXlist = [10,990,990,10]
@@ -11,47 +12,94 @@ class Network:
 
     def __init__(self,master=None):
 
-        Width  = w-150
-        Height = h
-        print w
-        print h
+        Width  = w - 250
+        Height = h - 150
+        Half_Width  = Width/2 
+        Half_Height = Height/2
+        #print Width
+        #print Height
         self.master = master
         self.master.title("Network Simulator")
         self.master.grid()
         self.master.rowconfigure(0,weight=1)
         self.master.columnconfigure(0,weight=1)
-        self.canvas = Canvas(self.master,width=Width,height=Height,bg="grey")
+        self.canvas = Canvas(self.master,width=w,height=h,bg="grey")
         self.canvas.grid(row=0,rowspan=1,column=0)
         
-        poly = [10,10,850,10,850,480,10,480]
-        self.canvas.create_polygon(poly,outline='red',fill='#d47284',width=2)
-        tempXlist = [poly[x] for x in range(len(poly)) if x%2 ==0]
-        print tempXlist
-        tempYlist = [poly[x+1] for x in range(len(poly)) if x%2 ==0]
-        print tempYlist
-        
+        poly = [10,10,Half_Width,10,Half_Width,Half_Height,10,Half_Height]
         poly2=[]
-        for i in range(0,len(poly),2):
-            poly2.append(poly[i]+900)
-            poly2.append(poly[i+1])
-
-        print poly2
-        self.canvas.create_polygon(poly2,outline='red',fill='#5ba99b',width=2)
-
         poly3=[]
-        for i in range(1,len(poly),2):
-            poly3.append(poly[i-1])
-            poly3.append(poly[i]+505)
-        print poly3
-        self.canvas.create_polygon(poly3,outline='red',fill='#72b5d4',width=2)
-
         poly4=[]
-        for i in range(0,len(poly3),2):
-            poly4.append(poly3[i]+900)
-            poly4.append(poly3[i+1])
+##        self.canvas.create_polygon(poly,outline='red',fill='#d47284',width=2)
+        tempXlist = [poly[x] for x in range(len(poly)) if x%2 ==0]
+        tempYlist = [poly[x+1] for x in range(len(poly)) if x%2 ==0]
+        
+        if Communities == 1:
+            poly = [10,10,Width,10,Width,Height,10,Height]
+            self.canvas.create_polygon(poly,outline='red',fill='#d47284',width=2)
+            tempXlist = [poly[x] for x in range(len(poly)) if x%2 ==0]
+            tempYlist = [poly[x+1] for x in range(len(poly)) if x%2 ==0]
+            
+        if Communities == 2:
+            poly = [10,10,Half_Width,10,Half_Width,Height,10,Height]
+            tempXlist = [poly[x] for x in range(len(poly)) if x%2 ==0]
+            tempYlist = [poly[x+1] for x in range(len(poly)) if x%2 ==0]
+            self.canvas.create_polygon(poly,outline='red',fill='#d47284',width=2)
 
-        print poly4
-        self.canvas.create_polygon(poly4,outline='red',fill='#72d491',width=2)
+            #Poly2
+            for i in range(0,len(poly),2):
+                
+                poly2.append(poly[i]+Half_Width+70)
+                poly2.append(poly[i+1])
+            #print poly2
+            self.canvas.create_polygon(poly2,outline='red',fill='#5ba99b',width=2)
+            
+        if Communities ==3:
+            self.canvas.create_polygon(poly,outline='red',fill='#d47284',width=2)
+
+            #Poly2
+            for i in range(0,len(poly),2):
+                
+                poly2.append(poly[i]+Half_Width+70)
+                poly2.append(poly[i+1])
+            #print poly2
+            self.canvas.create_polygon(poly2,outline='red',fill='#5ba99b',width=2)
+            
+            #Poly3
+            for i in range(1,len(poly),2):
+                if i-1 == 0 or i-1 == 6:
+                    poly3.append(poly[i-1])
+                else:
+                    poly3.append(Width)
+                poly3.append(poly[i]+Half_Height+50)
+            print poly3
+            self.canvas.create_polygon(poly3,outline='red',fill='#72b5d4',width=2)
+
+        if Communities == 4:
+            self.canvas.create_polygon(poly,outline='red',fill='#d47284',width=2)
+
+            #Poly2
+            for i in range(0,len(poly),2):
+                
+                poly2.append(poly[i]+Half_Width+70)
+                poly2.append(poly[i+1])
+            #print poly2
+            self.canvas.create_polygon(poly2,outline='red',fill='#5ba99b',width=2)
+            
+            #Poly3
+            for i in range(1,len(poly),2):
+                poly3.append(poly[i-1])
+                poly3.append(poly[i]+Half_Height+50)
+            #print poly3
+            self.canvas.create_polygon(poly3,outline='red',fill='#72b5d4',width=2)
+                
+            #Poly4
+            for i in range(0,len(poly3),2):
+                poly4.append(poly3[i]+Half_Width+70)
+                poly4.append(poly3[i+1])
+
+            #print poly4
+            self.canvas.create_polygon(poly4,outline='red',fill='#72d491',width=2)
 
 ##        poly1 = [910,10,1760,10,1760,480,910,480]
 ##        self.canvas.create_polygon(poly1,outline='red',fill='#5ba99b',width=2)
@@ -78,8 +126,7 @@ class Network:
                 x = rd.randrange(XminNo+1,XmaxNo-radius)
                 y = rd.randrange(YminNo+1,YmaxNo-radius)
                 inside = point_inside_polygon(x,y,poly)
-            
-            
+               
             _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="black", width=2,activefill="green")
             #print _oval
             self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
@@ -138,19 +185,36 @@ class Settings:
         top = self.top = tk.Toplevel(parent)
         self.top.title('Settings')
 
-        #Node Control
-        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
+        #Community Control
+        self.spinbox_Label= tk.Label(top, text='Number of Community?')
         self.spinbox_Label.grid(row=0, column=0)
 
         self.spinbox_Label= tk.Label(top,text='Nodes:')
         self.spinbox_Label.grid(row=1, column=0)
 
+        self.No_Nodes_Scale = tk.Scale(top,from_=1, to=4,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale.set(4)
+        self.No_Nodes_Scale.bind("<ButtonRelease-1>",self.changeCommunities)#,self.update_beta_2
+        self.No_Nodes_Scale.grid(row=1,column=1)
+
+        #Node Control
+        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label.grid(row=2, column=0)
+
+        self.spinbox_Label= tk.Label(top,text='Nodes:')
+        self.spinbox_Label.grid(row=3, column=0)
+
         self.No_Nodes_Scale = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale.set(5)
-        self.No_Nodes_Scale.bind("<ButtonRelease-1>",self.change)#,self.update_beta_2
-        self.No_Nodes_Scale.grid(row=1,column=1)
+        self.No_Nodes_Scale.bind("<ButtonRelease-1>",self.changeNodes)#,self.update_beta_2
+        self.No_Nodes_Scale.grid(row=3,column=1)
+
+    def changeCommunities(self,event):
+        global Communities
+        Communities = event.widget.get()
+        MG=Network(root) #This just generates a new Network with original coordinates
     
-    def change(self,event):
+    def changeNodes(self,event):
         global scale
         scale = event.widget.get()
         #print scale
@@ -181,7 +245,6 @@ def point_inside_polygon(x,y,poly):
                     if p1x == p2x or x <= xinters:
                         inside = not inside
         p1x,p1y = p2x,p2y
-
     return inside
 
  
