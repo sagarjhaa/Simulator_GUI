@@ -3,9 +3,14 @@ import Tkinter as tk
 import random as rd
 
 from Community_Coordinates import CommunityCoordinates_Generator
-from diffusion.SimulatorExperimence import SimulatorExperimence
+#from diffusion.SimulatorExperimence import SimulatorExperimence
+from diffuse.Simulator import Simulator
 
 Communities = 4
+n1 = 5
+n2 = 5
+n3 = 5
+n4 = 5
 scale = 5
 #poly = [10,10,990,10,990,590,10,590]
 #tempXlist = [10,990,990,10]
@@ -27,14 +32,70 @@ class Network:
         self.Communities = Communities
         self.Community_Coordinate = CommunityCoordinates_Generator(self.Communities,w,h)
         
+        #print self.Community_Coordinate
+        print self.Communities+1
         for i in range(1,self.Communities+1):
-            _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',fill='#d47284',width=2)
-            print _polygon
+            print self.Community_Coordinate[i] 
+            #_polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
+            #print _polygon
+            
+            if i == 1:
+                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
+                self.canvas.itemconfig(_polygon,fill="#d47284")
 
-        Point_List=[]
-        Point_List = self.__simulate()
-        for i in range(len(Point_List)):
-            _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                s1 = Simulator(n1)
+                Point_List=[]
+                s1.genPoints(self.Community_Coordinate[i])
+                Point_List=s1.pAll
+
+                for i in range(len(Point_List)):
+                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+
+            if i ==2:
+                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
+                self.canvas.itemconfig(_polygon,fill="#b0ff01")
+
+##                s = Simulator(n2)
+##                Point_List=[]
+##                s.genPoints(self.Community_Coordinate[i])
+##                Point_List=s.pAll
+##
+##                for i in range(len(Point_List)):
+##                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                
+            if i ==3:
+                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
+                self.canvas.itemconfig(_polygon,fill="#4d1b7b")
+
+##                s = Simulator(n3)
+##                Point_List=[]
+##                s.genPoints(self.Community_Coordinate[i])
+##                Point_List=s.pAll
+##
+##                for i in range(len(Point_List)):
+##                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                    
+            if i ==4:
+                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
+                self.canvas.itemconfig(_polygon,fill="#3279d3")
+
+##                s = Simulator(n4)
+##                Point_List=[]
+##                s.genPoints(self.Community_Coordinate[i])
+##                Point_List=s.pAll
+##
+##                for i in range(len(Point_List)):
+##                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                    
+            #print _polygon
+
+          
+
+
+##        Point_List=[]
+##        Point_List = self.__simulate()
+##        for i in range(len(Point_List)):
+##            _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
         
 ##        XmaxNo = max(self.Community_Coordinate[1][1])
 ##        XminNo = min(self.Community_Coordinate[1][1])
@@ -74,14 +135,14 @@ class Network:
 ##                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[j][0]+half_radius, self.Nodes[j][1]+half_radius,fill="white", dash=(4, 4),tags = i)
 ##        #print self.Links
 
-    def __simulate(self):
-        """
-        This function will create object of SimulatorExperimence 
-        """
-        self.Sim = SimulatorExperimence()
-        ## Test to check object type       
-        ## print(type(self.Sim))
-        return self.Sim.doT1nT2n(self.Community_Coordinate)
+##    def __simulate(self):
+##        """
+##        This function will create object of SimulatorExperimence 
+##        """
+##        self.Sim = SimulatorExperimence()
+##        ## Test to check object type       
+##        ## print(type(self.Sim))
+##        return self.Sim.doT1nT2n(self.Community_Coordinate)
                 
     def nodeConverter(self,widget_id):
 

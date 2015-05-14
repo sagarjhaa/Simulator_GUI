@@ -74,8 +74,8 @@ class SimulatorExperimence(object):
         return       
 
     def doT1nT2n(self,Community_Coordinate):
-        nPnt=1000
-        nLink=40
+        nPnt= 10   #1000
+        nLink= 11  #40
         
         tests=""
         s=Simulator(nPnt)
