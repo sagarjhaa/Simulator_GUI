@@ -3,6 +3,7 @@ import Tkinter as tk
 import random as rd
 
 from Community_Coordinates import CommunityCoordinates_Generator
+from diffusion.SimulatorExperimence import SimulatorExperimence
 
 Communities = 4
 scale = 5
@@ -29,46 +30,58 @@ class Network:
         for i in range(1,self.Communities+1):
             _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',fill='#d47284',width=2)
             print _polygon
-            
-    
-        XmaxNo = max(self.Community_Coordinate[1][1])
-        XminNo = min(self.Community_Coordinate[1][1])
-        YmaxNo = max(self.Community_Coordinate[1][2])
-        YminNo = min(self.Community_Coordinate[1][2])
-        self.Nodes = {}
-        self.Links = {}
-        
-        radius = 20
-        half_radius = radius/2
-        
-        for i in range(scale):
-            inside = False
-            while not inside:
-                x = rd.randrange(XminNo+1,XmaxNo-radius)
-                y = rd.randrange(YminNo+1,YmaxNo-radius)
-                inside = point_inside_polygon(x,y,self.Community_Coordinate[1][0])
-               
-            _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="black", width=2,activefill="green")
-            #print _oval
-            self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
-            self.Nodes[_oval] = [x,y]
-            self.Links[_oval] = []
 
-            if i==0:
-                tempid = _oval
-            if i==1:
-                #self.Links[_oval].append(0)
-                self.Links[tempid].append(_oval)
-                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[tempid][0]+half_radius, self.Nodes[tempid][1]+half_radius,fill="blue", dash=(4, 4),tags = i)
-            if i>1:
-                j = rd.choice(self.Nodes.keys())
-                while j == _oval:
-                    j = rd.choice(self.Nodes.keys())
-                #self.Links[_oval].append(j)
-                self.Links[j].append(_oval) #added
-                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[j][0]+half_radius, self.Nodes[j][1]+half_radius,fill="white", dash=(4, 4),tags = i)
-##        #print self.Links
+        Point_List=[]
+        Point_List = self.__simulate()
+        for i in range(len(Point_List)):
+            _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
         
+##        XmaxNo = max(self.Community_Coordinate[1][1])
+##        XminNo = min(self.Community_Coordinate[1][1])
+##        YmaxNo = max(self.Community_Coordinate[1][2])
+##        YminNo = min(self.Community_Coordinate[1][2])
+##        self.Nodes = {}
+##        self.Links = {}
+##        
+##        radius = 20
+##        half_radius = radius/2
+##        
+##        for i in range(scale):
+##            inside = False
+##            while not inside:
+##                x = rd.randrange(XminNo+1,XmaxNo-radius)
+##                y = rd.randrange(YminNo+1,YmaxNo-radius)
+##                inside = point_inside_polygon(x,y,self.Community_Coordinate[1][0])
+##               
+##            _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="black", width=2,activefill="green")
+##            #print _oval
+##            self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
+##            self.Nodes[_oval] = [x,y]
+##            self.Links[_oval] = []
+##
+##            if i==0:
+##                tempid = _oval
+##            if i==1:
+##                #self.Links[_oval].append(0)
+##                self.Links[tempid].append(_oval)
+##                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[tempid][0]+half_radius, self.Nodes[tempid][1]+half_radius,fill="blue", dash=(4, 4),tags = i)
+##            if i>1:
+##                j = rd.choice(self.Nodes.keys())
+##                while j == _oval:
+##                    j = rd.choice(self.Nodes.keys())
+##                #self.Links[_oval].append(j)
+##                self.Links[j].append(_oval) #added
+##                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[j][0]+half_radius, self.Nodes[j][1]+half_radius,fill="white", dash=(4, 4),tags = i)
+##        #print self.Links
+
+    def __simulate(self):
+        """
+        This function will create object of SimulatorExperimence 
+        """
+        self.Sim = SimulatorExperimence()
+        ## Test to check object type       
+        ## print(type(self.Sim))
+        return self.Sim.doT1nT2n(self.Community_Coordinate)
                 
     def nodeConverter(self,widget_id):
 
