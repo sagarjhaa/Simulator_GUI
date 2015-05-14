@@ -11,7 +11,7 @@ n1 = 5
 n2 = 5
 n3 = 5
 n4 = 5
-scale = 5
+#scale = 5
 #poly = [10,10,990,10,990,590,10,590]
 #tempXlist = [10,990,990,10]
 #tempYlist = [10,10,590,590]
@@ -33,59 +33,56 @@ class Network:
         self.Community_Coordinate = CommunityCoordinates_Generator(self.Communities,w,h)
         
         #print self.Community_Coordinate
-        print self.Communities+1
+        self.n1 = n1
+        self.n2 = n2
+        self.n3 = n3
+        self.n4 = n4
         for i in range(1,self.Communities+1):
-            print self.Community_Coordinate[i] 
-            #_polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
-            #print _polygon
+            _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
             
             if i == 1:
-                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
                 self.canvas.itemconfig(_polygon,fill="#d47284")
 
-                s1 = Simulator(n1)
+                s = Simulator(self.n1)
                 Point_List=[]
-                s1.genPoints(self.Community_Coordinate[i])
-                Point_List=s1.pAll
+                s.genPoints(self.Community_Coordinate[1])
+                Point_List=s.pAll
 
-                for i in range(len(Point_List)):
-                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                for j in range(len(Point_List)):
+                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
 
             if i ==2:
-                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
                 self.canvas.itemconfig(_polygon,fill="#b0ff01")
 
-##                s = Simulator(n2)
-##                Point_List=[]
-##                s.genPoints(self.Community_Coordinate[i])
-##                Point_List=s.pAll
-##
-##                for i in range(len(Point_List)):
-##                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                s = Simulator(self.n2)
+                Point_List=[]
+                s.genPoints(self.Community_Coordinate[i])
+                Point_List=s.pAll
+
+                for j in range(len(Point_List)):
+                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
                 
             if i ==3:
-                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
                 self.canvas.itemconfig(_polygon,fill="#4d1b7b")
 
-##                s = Simulator(n3)
-##                Point_List=[]
-##                s.genPoints(self.Community_Coordinate[i])
-##                Point_List=s.pAll
-##
-##                for i in range(len(Point_List)):
-##                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                s = Simulator(self.n3)
+                Point_List=[]
+                s.genPoints(self.Community_Coordinate[i])
+                Point_List=s.pAll
+
+                for j in range(len(Point_List)):
+                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
                     
             if i ==4:
-                _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
                 self.canvas.itemconfig(_polygon,fill="#3279d3")
 
-##                s = Simulator(n4)
-##                Point_List=[]
-##                s.genPoints(self.Community_Coordinate[i])
-##                Point_List=s.pAll
-##
-##                for i in range(len(Point_List)):
-##                    _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
+                s = Simulator(self.n4)
+                Point_List=[]
+                s.genPoints(self.Community_Coordinate[i])
+                Point_List=s.pAll
+
+                for j in range(len(Point_List)):
+                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
                     
             #print _polygon
 
@@ -196,22 +193,40 @@ class Settings:
         self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
         self.spinbox_Label.grid(row=2, column=0)
 
-        self.spinbox_Label= tk.Label(top,text='Nodes:')
+        self.spinbox_Label= tk.Label(top,text='Nodes1:')
         self.spinbox_Label.grid(row=3, column=0)
 
-        self.No_Nodes_Scale = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale.set(5)
-        self.No_Nodes_Scale.bind("<ButtonRelease-1>",self.changeNodes)#,self.update_beta_2
-        self.No_Nodes_Scale.grid(row=3,column=1)
+        self.No_Nodes_Scale1 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale1.set(5)
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_n1)#,self.update_beta_2
+        self.No_Nodes_Scale1.grid(row=3,column=1)
+
+        #Node Control
+        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label.grid(row=4, column=0)
+
+        self.spinbox_Label= tk.Label(top,text='Nodes2:')
+        self.spinbox_Label.grid(row=5, column=0)
+
+        self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(5)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n2)#,self.update_beta_2
+        self.No_Nodes_Scale2.grid(row=5,column=1)
 
     def changeCommunities(self,event):
         global Communities
         Communities = event.widget.get()
         MG=Network(root) #This just generates a new Network with original coordinates
     
-    def changeNodes(self,event):
-        global scale
-        scale = event.widget.get()
+    def changeNodes_n1(self,event):
+        global n1
+        n1 = event.widget.get()
+        #print scale
+        MG=Network(root) #This just generates a new Network with original coordinates
+
+    def changeNodes_n2(self,event):
+        global n2
+        n2 = event.widget.get()
         #print scale
         MG=Network(root) #This just generates a new Network with original coordinates
         
