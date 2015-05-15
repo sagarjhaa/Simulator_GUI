@@ -139,24 +139,45 @@ class Simulator:
         print "The number of T1 "+str(self.nT1)          
         print "The number of T2 "+str(self.nT1)
          
-        
+    #Sagar's GenLinks
+    def genLinks(self,nLinks):
+        '''
+        generate links
+        '''
+        self.nLinks = nLinks
+        #linkid = 0
+        for fromId in range(self.nPoints):
+            Nlinks =random.randrange(1,self.nPoints)
+            for j in range(Nlinks):
+
+                n = random.randrange(self.nPoints)
+                while fromId == n or n in self.pAll[fromId].links:
+                    n = random.randrange(self.nPoints)
+                self.pAll[fromId].links.append(n)    
+
+                
+##            n = random.randrange(self.nPoints)
+##            while fromId == n or n in self.pAll[fromId].links:
+##                n = random.randrange(self.nPoints)
+##                
+##            self.pAll[fromId].links.append(n)    
         
           
-    def genLinks(self,nLinks):  
-        '''
-        generate links 
-        '''
-        self.nLinks=nLinks
-        linkid=0   
-        for fromId in range(self.nPoints):
-            n=random.randint(1,self.nLinks)
-            i=0            
-            while  i <n:
-                toId=random.randint(0,self.nPoints-1)                        
-                if self.addLlink(fromId,toId,linkid)==False  : continue
-                linkid=linkid+1
-                i=i+1
-        return linkid+1       
+##    def genLinks(self,nLinks):  
+##        '''
+##        generate links 
+##        '''
+##        self.nLinks=nLinks
+##        linkid=0   
+##        for fromId in range(self.nPoints):
+##            n=random.randint(1,self.nLinks)
+##            i=0            
+##            while  i <n:
+##                toId=random.randint(0,self.nPoints-1)                        
+##                if self.addLlink(fromId,toId,linkid)==False  : continue
+##                linkid=linkid+1
+##                i=i+1
+##        return linkid+1       
     
     def genRandomLinks(self,nLinks):
         '''

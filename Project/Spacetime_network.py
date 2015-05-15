@@ -11,10 +11,7 @@ n1 = 5
 n2 = 5
 n3 = 5
 n4 = 5
-#scale = 5
-#poly = [10,10,990,10,990,590,10,590]
-#tempXlist = [10,990,990,10]
-#tempYlist = [10,10,590,590]
+Radius = 10
 
 class Network:
 
@@ -37,6 +34,10 @@ class Network:
         self.n2 = n2
         self.n3 = n3
         self.n4 = n4
+
+        self.Radius = Radius
+        self.Half_Radius = Radius/2
+        
         for i in range(1,self.Communities+1):
             _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
             
@@ -46,10 +47,20 @@ class Network:
                 s = Simulator(self.n1)
                 Point_List=[]
                 s.genPoints(self.Community_Coordinate[1])
+                s.genLinks(self.n1*10)
                 Point_List=s.pAll
-
-                for j in range(len(Point_List)):
-                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
+                
+                for jNode in range(len(Point_List)):
+                    #print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links)
+                    #print j,s.pAll[j].links[0]
+                    print len(s.pAll[jNode].links),0.2*10*self.n1
+                    if len(s.pAll[jNode].links) <= 0.1*10*self.n1:
+                        _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",fill="green", width=2,activefill="green")
+                    else:
+                        _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green")
+                    for iNode in range(len(s.pAll[jNode].links)):
+                        a= s.pAll[jNode].links[iNode]
+                        self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill="blue", dash=(4, 4),tags = i)
 
             if i ==2:
                 self.canvas.itemconfig(_polygon,fill="#b0ff01")
@@ -85,9 +96,6 @@ class Network:
                     _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
                     
             #print _polygon
-
-          
-
 
 ##        Point_List=[]
 ##        Point_List = self.__simulate()
@@ -189,11 +197,11 @@ class Settings:
         self.No_Nodes_Scale.bind("<ButtonRelease-1>",self.changeCommunities)#,self.update_beta_2
         self.No_Nodes_Scale.grid(row=1,column=1)
 
-        #Node Control
+        #Node Control - 1
         self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
         self.spinbox_Label.grid(row=2, column=0)
 
-        self.spinbox_Label= tk.Label(top,text='Nodes1:')
+        self.spinbox_Label= tk.Label(top,text='Nodes 1:')
         self.spinbox_Label.grid(row=3, column=0)
 
         self.No_Nodes_Scale1 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
@@ -201,17 +209,54 @@ class Settings:
         self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_n1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=1)
 
-        #Node Control
+        #Node Control - 2
         self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
         self.spinbox_Label.grid(row=4, column=0)
 
-        self.spinbox_Label= tk.Label(top,text='Nodes2:')
+        self.spinbox_Label= tk.Label(top,text='Nodes 2:')
         self.spinbox_Label.grid(row=5, column=0)
 
         self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale2.set(5)
         self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n2)#,self.update_beta_2
         self.No_Nodes_Scale2.grid(row=5,column=1)
+
+        #Node Control - 3
+        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label.grid(row=6, column=0)
+
+        self.spinbox_Label= tk.Label(top,text='Nodes 3:')
+        self.spinbox_Label.grid(row=7, column=0)
+
+        self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(5)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n3)#,self.update_beta_2
+        self.No_Nodes_Scale2.grid(row=7,column=1)
+
+        #Node Control - 4
+        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label.grid(row=8, column=0)
+
+        self.spinbox_Label= tk.Label(top,text='Nodes 4:')
+        self.spinbox_Label.grid(row=9, column=0)
+
+        self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(5)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n4)#,self.update_beta_2
+        self.No_Nodes_Scale2.grid(row=9,column=1)
+
+        #Radius Control
+        self.spinbox_Label= tk.Label(top, text='Radius of Nodes?')
+        self.spinbox_Label.grid(row=10, column=0)
+
+        self.spinbox_Label= tk.Label(top,text='Radius:')
+        self.spinbox_Label.grid(row=11, column=0)
+
+        self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=20,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(10)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeRadius)#,self.update_beta_2
+        self.No_Nodes_Scale2.grid(row=11,column=1)
+
 
     def changeCommunities(self,event):
         global Communities
@@ -229,6 +274,23 @@ class Settings:
         n2 = event.widget.get()
         #print scale
         MG=Network(root) #This just generates a new Network with original coordinates
+        
+    def changeNodes_n3(self,event):
+        global n3
+        n3 = event.widget.get()
+        #print scale
+        MG=Network(root) #This just generates a new Network with original coordinates
+
+    def changeNodes_n4(self,event):
+        global n4
+        n4 = event.widget.get()
+        #print scale
+        MG=Network(root) #This just generates a new Network with original coordinates
+
+    def changeRadius(self,event):
+        global Radius
+        Radius = event.widget.get()
+        MG = Network(root)
         
 def onClick():
     inputDialog = Settings(root)

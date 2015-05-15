@@ -138,9 +138,8 @@ class Simulator:
         print "The number of T1 "+str(self.nT1)          
         print "The number of T2 "+str(self.nT1)
          
-        
-        
-          
+       
+
     def genLinks(self,nLinks):  
         '''
         generate links 
