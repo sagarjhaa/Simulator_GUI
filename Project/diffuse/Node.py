@@ -21,4 +21,5 @@ class Node:
         self.status=0
         self.p=0
         self.color = ""
+        self.follower=[]
     

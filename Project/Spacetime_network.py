@@ -7,17 +7,17 @@ from Community_Coordinates import CommunityCoordinates_Generator
 from diffuse.Simulator import Simulator
 
 Communities = 4
-n1 = 5
+n1 = 1000
 n2 = 5
 n3 = 5
 n4 = 5
 
-l1 = 5
+l1 = 4000
 l2 = 5
 l3 = 5
 l4 = 5
 
-Radius = 10
+Radius = 3
 
 class Network:
 
@@ -63,19 +63,20 @@ class Network:
                 Point_List=s.pAll
                 
                 for jNode in range(len(Point_List)):
-                    print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links),(100*len(s.pAll[jNode].links))/l1
+                    print jNode,s.pAll[jNode].links,s.pAll[jNode].follower,len(s.pAll[jNode].links),(100*len(s.pAll[jNode].links))/l1
                     #print j,s.pAll[j].links[0]
                     #print len(s.pAll[jNode].links),0.4*temp*self.n1
                     #if len(s.pAll[jNode].links) >= int(0.3*l1):
-                    #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius +((100*len(s.pAll[jNode].links))/l1), Point_List[jNode].y + self.Radius + ((100*len(s.pAll[jNode].links))/l1), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
+                        #_oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius +((100*len(s.pAll[jNode].links))/l1), Point_List[jNode].y + self.Radius + ((100*len(s.pAll[jNode].links))/l1), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
+                    #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + (self.Radius *((10*len(s.pAll[jNode].links))/l1)), Point_List[jNode].y + (self.Radius * ((10*len(s.pAll[jNode].links))/l1)), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
                     #else:
                     #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green",fill=Point_List[jNode].color)
-
-                    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius +((100*len(s.pAll[jNode].links))/l1), Point_List[jNode].y + self.Radius + ((100*len(s.pAll[jNode].links))/l1), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
+                    
+                    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + (self.Radius * len(s.pAll[jNode].follower)), Point_List[jNode].y + (self.Radius * len(s.pAll[jNode].follower)), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
                     
                     for iNode in range(len(s.pAll[jNode].links)):
                         a= s.pAll[jNode].links[iNode]
-                        self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill=Point_List[jNode].color, dash=(4, 4),tags = i)
+                        #self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill="white", dash=(4, 4),tags = i) #Point_List[jNode].color
                 print "-"*50
 
             if i ==2:

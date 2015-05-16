@@ -165,6 +165,7 @@ class Simulator:
                 n = random.randrange(self.nPoints)
             ilinks = ilinks + 1    
             self.pAll[fromId].links.append(n)
+            self.pAll[n].follower.append(fromId)
 
         
         if ilinks < self.nLinks:
