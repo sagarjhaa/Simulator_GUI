@@ -55,7 +55,7 @@ class Network:
                 Point_List=s.pAll
                 
                 for jNode in range(len(Point_List)):
-                    print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links)
+                    #print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links)
                     #print j,s.pAll[j].links[0]
                     #print len(s.pAll[jNode].links),0.4*temp*self.n1
                     if len(s.pAll[jNode].links) >= int(0.3*temp1):
@@ -186,7 +186,6 @@ class Network:
         
 class Settings:
     def __init__(self, parent):
-
         top = self.top = tk.Toplevel(parent)
         self.top.title('Settings')
 
@@ -210,10 +209,22 @@ class Settings:
         self.spinbox_Label.grid(row=3, column=0)
 
         self.No_Nodes_Scale1 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale1.set(5)
+        self.No_Nodes_Scale1.set(n1)
         self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_n1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=1)
 
+        #Link Control - 1
+        self.spinbox_Label= tk.Label(top, text='Number of Links?')
+        self.spinbox_Label.grid(row=2, column=2)
+
+        self.spinbox_Label= tk.Label(top,text='Links 1:')
+        self.spinbox_Label.grid(row=3, column=2)
+
+        self.No_Nodes_Scale1 = tk.Scale(top,from_=n1, to=(n1*(n1-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale1.set(5)
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",)#,self.update_beta_2
+        self.No_Nodes_Scale1.grid(row=3,column=2)
+        
         #Node Control - 2
         self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
         self.spinbox_Label.grid(row=4, column=0)
@@ -271,9 +282,10 @@ class Settings:
     def changeNodes_n1(self,event):
         global n1
         n1 = event.widget.get()
-        #print scale
+        #print scale        
         MG=Network(root) #This just generates a new Network with original coordinates
 
+        
     def changeNodes_n2(self,event):
         global n2
         n2 = event.widget.get()
