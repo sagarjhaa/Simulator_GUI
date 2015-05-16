@@ -20,4 +20,5 @@ class Node:
         self.toIds=[]
         self.status=0
         self.p=0
+        self.color = ""
     

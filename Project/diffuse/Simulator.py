@@ -74,6 +74,9 @@ class Simulator:
 
             node=Node()
             node.id=i
+            r = lambda: random.randint(0,255)
+            rColor = '#%02X%02X%02X' % (r(),r(),r())
+            node.color = rColor
             node.x=random.randrange(XminNo+1,XmaxNo-20)
             node.y=random.randrange(YminNo+1,YmaxNo-20)            
             self.pAll.append(node)

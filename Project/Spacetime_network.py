@@ -11,6 +11,12 @@ n1 = 5
 n2 = 5
 n3 = 5
 n4 = 5
+
+l1 = 5
+l2 = 5
+l3 = 5
+l4 = 5
+
 Radius = 10
 
 class Network:
@@ -42,30 +48,35 @@ class Network:
             _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
             
             if i == 1:
-                self.canvas.itemconfig(_polygon,fill="#d47284")
+                self.canvas.itemconfig(_polygon,fill="#fff") ##d47284
 
                 s = Simulator(self.n1)
                 Point_List=[]
                 s.genPoints(self.Community_Coordinate[1])
-                temp = self.n1 - 1
                 #temp1 = int(self.n1 * temp * ((100*self.n1)/(temp*self.n1*0.3))/100)
-                temp1 = self.n1 * temp
+                
+                #temp = self.n1 - 1
+                #temp1 = self.n1 * temp
                 #print temp1,(100*temp1)/(self.n1*temp)
-                s.genLinks(temp1)
+                
+                s.genLinks(l1)
                 Point_List=s.pAll
                 
                 for jNode in range(len(Point_List)):
-                    #print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links)
+                    print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links),(100*len(s.pAll[jNode].links))/l1
                     #print j,s.pAll[j].links[0]
                     #print len(s.pAll[jNode].links),0.4*temp*self.n1
-                    if len(s.pAll[jNode].links) >= int(0.3*temp1):
-                        _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",fill="green", width=2,activefill="green")
-                    else:
-                        _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green")
+                    #if len(s.pAll[jNode].links) >= int(0.3*l1):
+                    #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius +((100*len(s.pAll[jNode].links))/l1), Point_List[jNode].y + self.Radius + ((100*len(s.pAll[jNode].links))/l1), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
+                    #else:
+                    #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green",fill=Point_List[jNode].color)
 
+                    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius +((100*len(s.pAll[jNode].links))/l1), Point_List[jNode].y + self.Radius + ((100*len(s.pAll[jNode].links))/l1), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
+                    
                     for iNode in range(len(s.pAll[jNode].links)):
                         a= s.pAll[jNode].links[iNode]
-                        self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill="blue", dash=(4, 4),tags = i)
+                        self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill=Point_List[jNode].color, dash=(4, 4),tags = i)
+                print "-"*50
 
             if i ==2:
                 self.canvas.itemconfig(_polygon,fill="#b0ff01")
@@ -221,8 +232,8 @@ class Settings:
         self.spinbox_Label.grid(row=3, column=2)
 
         self.No_Nodes_Scale1 = tk.Scale(top,from_=n1, to=(n1*(n1-1)),orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale1.set(5)
-        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",)#,self.update_beta_2
+        self.No_Nodes_Scale1.set(n1)
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_l1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=2)
         
         #Node Control - 2
@@ -280,11 +291,28 @@ class Settings:
         MG=Network(root) #This just generates a new Network with original coordinates
     
     def changeNodes_n1(self,event):
-        global n1
+        global n1,l1
         n1 = event.widget.get()
+        l1 = n1
         #print scale        
         MG=Network(root) #This just generates a new Network with original coordinates
 
+        self.spinbox_Label= tk.Label(self.top, text='Number of Links?')
+        self.spinbox_Label.grid(row=2, column=2)
+
+        self.spinbox_Label= tk.Label(self.top,text='Links 1:')
+        self.spinbox_Label.grid(row=3, column=2)
+
+        self.No_Nodes_Scale1 = tk.Scale(self.top,from_=n1, to=(n1*(n1-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale1.set(n1)
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_l1)#,self.update_beta_2
+        self.No_Nodes_Scale1.grid(row=3,column=2)
+
+    def changeNodes_l1(self,event):
+        global l1
+        l1 = event.widget.get()
+        #print scale        
+        MG=Network(root) #This just generates a new Network with original coordinates
         
     def changeNodes_n2(self,event):
         global n2
@@ -312,9 +340,6 @@ class Settings:
 def onClick():
     inputDialog = Settings(root)
     root.wait_window(inputDialog.top)
-    
-def onClick2():
-    pass
 
 def point_inside_polygon(x,y,poly):
     n = len(poly)/2
@@ -346,9 +371,8 @@ w,h = root.winfo_screenwidth(),root.winfo_screenheight()  #It gives screen widht
 root.state('zoomed')
 root.geometry=("1000x900+0+0")
 
-MG=Network(root)
+NG=Network(root)
+
 mainButton = tk.Button(root, width=20, text='Settings',command=onClick)
 mainButton.grid(row=1, column=1)
-##mainButton = tk.Button(root, width=20, text='Opinion Leader',command=onClick2)
-##mainButton.grid(row=2, column=1)
 root.mainloop()
