@@ -47,17 +47,22 @@ class Network:
                 s = Simulator(self.n1)
                 Point_List=[]
                 s.genPoints(self.Community_Coordinate[1])
-                s.genLinks(self.n1*10)
+                temp = self.n1 - 1
+                #temp1 = int(self.n1 * temp * ((100*self.n1)/(temp*self.n1*0.3))/100)
+                temp1 = self.n1 * temp
+                #print temp1,(100*temp1)/(self.n1*temp)
+                s.genLinks(temp1)
                 Point_List=s.pAll
                 
                 for jNode in range(len(Point_List)):
-                    #print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links)
+                    print jNode,s.pAll[jNode].links,len(s.pAll[jNode].links)
                     #print j,s.pAll[j].links[0]
-                    print len(s.pAll[jNode].links),0.2*10*self.n1
-                    if len(s.pAll[jNode].links) <= 0.1*10*self.n1:
+                    #print len(s.pAll[jNode].links),0.4*temp*self.n1
+                    if len(s.pAll[jNode].links) >= int(0.3*temp1):
                         _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",fill="green", width=2,activefill="green")
                     else:
                         _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green")
+
                     for iNode in range(len(s.pAll[jNode].links)):
                         a= s.pAll[jNode].links[iNode]
                         self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill="blue", dash=(4, 4),tags = i)
