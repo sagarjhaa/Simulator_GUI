@@ -6,8 +6,10 @@ from Community_Coordinates import CommunityCoordinates_Generator
 #from diffusion.SimulatorExperimence import SimulatorExperimence
 from diffuse.Simulator import Simulator
 
-Communities = 1
+Communities = 4
 n1 = 5
+n11 = 0
+
 n2 = 5
 n3 = 5
 n4 = 5
@@ -17,13 +19,15 @@ l2 = 5
 l3 = 5
 l4 = 5
 
-p1 = 20
+p1 = 40
 
-Radius = 10
+Radius = 20
 
 class Network:
 
     def __init__(self,master=None):
+
+        global n1,n11
 
         self.master = master
         self.master.title("Network Simulator")
@@ -36,8 +40,7 @@ class Network:
         self.Community_Coordinate = {}
         self.Communities = Communities
         self.Community_Coordinate = CommunityCoordinates_Generator(self.Communities,w,h)
-        
-        #print self.Community_Coordinate
+
         self.n1 = n1
         self.n2 = n2
         self.n3 = n3
@@ -52,140 +55,66 @@ class Network:
             if i == 1:
                 self.canvas.itemconfig(_polygon,fill="#fff") ##d47284
 
-                s = Simulator(self.n1)
-                Point_List=[]
-                s.genPoints(self.Community_Coordinate[1])           
-                s.genLinks(l1)
-                Point_List=s.pAll
+                s1 = Simulator(self.n1)
+                Point_List1=[]
+                s1.genPoints(self.Community_Coordinate[1])           
+                s1.genLinks(l1)
+                Point_List1=s1.pAll
 
-                for jNode in range(len(Point_List)):
-                    #print jNode,"Follow ",s.pAll[jNode].links,len(s.pAll[jNode].links),"Follower",s.pAll[jNode].follower#,
-                    print jNode,self.n1,"Follower",s.pAll[jNode].follower,len(s.pAll[jNode].follower),"Percentage ",(100*len(s.pAll[jNode].follower))/n1
+                for jNode in range(len(Point_List1)):
                     
+                    #Cross Checking
+##                    print "Node ID: ",jNode ,"::","Per.Follow: ",(100*len(s1.pAll[jNode].links))/n1,"%","::","Per.Follower: ",(100*len(s1.pAll[jNode].follower))/n1
+##                    print "Follow:  ",len(s1.pAll[jNode].links),s1.pAll[jNode].links
+##                    print "Follower:",len(s1.pAll[jNode].follower),s1.pAll[jNode].follower
+##                    print "-"* 50
+
+                    lenFollower = len(s1.pAll[jNode].follower)
+
+                    if lenFollower == 0:
+                        lenFollower = 2
                     
-                    #if len(s.pAll[jNode].follower) >= int(0.1*n1):
-                    if (100*len(s.pAll[jNode].follower))/n1 >= p1:
-                        _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + ((self.Radius * len(s.pAll[jNode].follower))/2), Point_List[jNode].y + ((self.Radius * len(s.pAll[jNode].follower))/2), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
+                    if (100*lenFollower)/n1 >= p1:
+                        _oval = self.canvas.create_oval(Point_List1[jNode].x,
+                                                        Point_List1[jNode].y,
+                                                        Point_List1[jNode].x + ((self.Radius * lenFollower)/2),
+                                                        Point_List1[jNode].y + ((self.Radius * lenFollower)/2),
+                                                        outline="black",
+                                                        fill=Point_List1[jNode].color,
+                                                        width=2,
+                                                        activefill="green")
                     else:
-                        _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green",fill="Black")#Point_List[jNode].color
+                        _oval = self.canvas.create_oval(Point_List1[jNode].x,
+                                                        Point_List1[jNode].y,
+                                                        Point_List1[jNode].x + ((self.Radius * lenFollower)/2),
+                                                        Point_List1[jNode].y + ((self.Radius * lenFollower)/2),
+                                                        outline="black",width=2,
+                                                        activefill="green",
+                                                        fill="Black")#Point_List[jNode].color
 
-                    if (100*len(s.pAll[jNode].follower))/n1 >= p1:
-                        for iNode in range(len(s.pAll[jNode].follower)):
-                            a= s.pAll[jNode].follower[iNode]
-                            self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill=Point_List[jNode].color, dash=(4, 4),tags = i) #
-                print "-"*50
+                    for iNode in range(len(s1.pAll[jNode].follower)):
+                        
+                        ToNode= s1.pAll[jNode].follower[iNode]
+                        self.canvas.create_line(Point_List1[jNode].x + self.Half_Radius,
+                                                Point_List1[jNode].y + self.Half_Radius,
+                                                Point_List1[ToNode].x + self.Half_Radius,
+                                                Point_List1[ToNode].y + self.Half_Radius,
+                                                fill=Point_List1[jNode].color,
+                                                dash=(4, 4),
+                                                tags = i,arrow="last",
+                                                activewidth=3) #
                 
             if i ==2:
                 self.canvas.itemconfig(_polygon,fill="#b0ff01")
 
-##                s = Simulator(self.n2)
-##                Point_List=[]
-##                s.genPoints(self.Community_Coordinate[i])
-##                Point_List=s.pAll
-
-                s = Simulator(self.n2)
-                Point_List=[]
-                s.genPoints(self.Community_Coordinate[2])
-                s.genLinks(l2)
-                Point_List=s.pAll
-                
-                for jNode in range(len(Point_List)):
-                    print jNode,s.pAll[jNode].links,s.pAll[jNode].follower,len(s.pAll[jNode].links),(100*len(s.pAll[jNode].links))/l2
-                    #print j,s.pAll[j].links[0]
-                    #print len(s.pAll[jNode].links),0.4*temp*self.n1
-                    #if len(s.pAll[jNode].links) >= int(0.3*l1):
-                        #_oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius +((100*len(s.pAll[jNode].links))/l1), Point_List[jNode].y + self.Radius + ((100*len(s.pAll[jNode].links))/l1), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
-                    #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + (self.Radius *((10*len(s.pAll[jNode].links))/l1)), Point_List[jNode].y + (self.Radius * ((10*len(s.pAll[jNode].links))/l1)), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
-                    #else:
-                    #    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + self.Radius, Point_List[jNode].y + self.Radius, outline="black",width=2,activefill="green",fill=Point_List[jNode].color)
-                    
-                    _oval = self.canvas.create_oval(Point_List[jNode].x,Point_List[jNode].y, Point_List[jNode].x + (self.Radius * len(s.pAll[jNode].follower)), Point_List[jNode].y + (self.Radius * len(s.pAll[jNode].follower)), outline="black",fill=Point_List[jNode].color, width=2,activefill="green")
-                    
-                    for iNode in range(len(s.pAll[jNode].links)):
-                        a= s.pAll[jNode].links[iNode]
-                        #self.canvas.create_line(Point_List[jNode].x + self.Half_Radius,Point_List[jNode].y + self.Half_Radius, Point_List[a].x + self.Half_Radius,Point_List[a].y + self.Half_Radius,fill="white", dash=(4, 4),tags = i) #Point_List[jNode].color
-                print "-"*50
-                
-
-##                for j in range(len(Point_List)):
-##                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
-                
             if i ==3:
                 self.canvas.itemconfig(_polygon,fill="#4d1b7b")
 
-                s = Simulator(self.n3)
-                Point_List=[]
-                s.genPoints(self.Community_Coordinate[i])
-                Point_List=s.pAll
-
-                for j in range(len(Point_List)):
-                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
                     
             if i ==4:
                 self.canvas.itemconfig(_polygon,fill="#3279d3")
 
-                s = Simulator(self.n4)
-                Point_List=[]
-                s.genPoints(self.Community_Coordinate[i])
-                Point_List=s.pAll
 
-                for j in range(len(Point_List)):
-                    _oval = self.canvas.create_oval(Point_List[j].x,Point_List[j].y, Point_List[j].x+10, Point_List[j].y+10, outline="black", width=2,activefill="green")
-                    
-            #print _polygon
-
-##        Point_List=[]
-##        Point_List = self.__simulate()
-##        for i in range(len(Point_List)):
-##            _oval = self.canvas.create_oval(Point_List[i].x,Point_List[i].y, Point_List[i].x+10, Point_List[i].y+10, outline="black", width=2,activefill="green")
-        
-##        XmaxNo = max(self.Community_Coordinate[1][1])
-##        XminNo = min(self.Community_Coordinate[1][1])
-##        YmaxNo = max(self.Community_Coordinate[1][2])
-##        YminNo = min(self.Community_Coordinate[1][2])
-##        self.Nodes = {}
-##        self.Links = {}
-##        
-##        radius = 20
-##        half_radius = radius/2
-##        
-##        for i in range(scale):
-##            inside = False
-##            while not inside:
-##                x = rd.randrange(XminNo+1,XmaxNo-radius)
-##                y = rd.randrange(YminNo+1,YmaxNo-radius)
-##                inside = point_inside_polygon(x,y,self.Community_Coordinate[1][0])
-##               
-##            _oval = self.canvas.create_oval(x,y, x+radius, y+radius, outline="black", width=2,activefill="green")
-##            #print _oval
-##            self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
-##            self.Nodes[_oval] = [x,y]
-##            self.Links[_oval] = []
-##
-##            if i==0:
-##                tempid = _oval
-##            if i==1:
-##                #self.Links[_oval].append(0)
-##                self.Links[tempid].append(_oval)
-##                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[tempid][0]+half_radius, self.Nodes[tempid][1]+half_radius,fill="blue", dash=(4, 4),tags = i)
-##            if i>1:
-##                j = rd.choice(self.Nodes.keys())
-##                while j == _oval:
-##                    j = rd.choice(self.Nodes.keys())
-##                #self.Links[_oval].append(j)
-##                self.Links[j].append(_oval) #added
-##                self.canvas.create_line(x+half_radius, y+half_radius, self.Nodes[j][0]+half_radius, self.Nodes[j][1]+half_radius,fill="white", dash=(4, 4),tags = i)
-##        #print self.Links
-
-##    def __simulate(self):
-##        """
-##        This function will create object of SimulatorExperimence 
-##        """
-##        self.Sim = SimulatorExperimence()
-##        ## Test to check object type       
-##        ## print(type(self.Sim))
-##        return self.Sim.doT1nT2n(self.Community_Coordinate)
-                
     def nodeConverter(self,widget_id):
 
         if widget_id-1 ==1:
@@ -265,7 +194,7 @@ class Settings:
         #self.spinbox_Label.grid(row=3, column=4)
 
         self.No_Nodes_Scale1 = tk.Scale(top,from_=1, to=100,orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale1.set(1)
+        self.No_Nodes_Scale1.set(p1)
         self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeP1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=4)
         
@@ -313,7 +242,7 @@ class Settings:
         self.spinbox_Label.grid(row=11, column=0)
 
         self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=20,orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale2.set(10)
+        self.No_Nodes_Scale2.set(20)
         self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeRadius)#,self.update_beta_2
         self.No_Nodes_Scale2.grid(row=11,column=1)
 
