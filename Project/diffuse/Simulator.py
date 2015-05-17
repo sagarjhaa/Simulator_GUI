@@ -149,44 +149,31 @@ class Simulator:
         '''
         self.nLinks = nLinks
         ilinks = 0
-        for fromId in range(self.nPoints):
-            
-##            Nlinks =random.randrange(1,self.nPoints)
-##            for j in range(Nlinks):
-##
-##                n = random.randrange(self.nPoints)
-##                while fromId == n or n in self.pAll[fromId].links:
-##                    n = random.randrange(self.nPoints)
-##                self.pAll[fromId].links.append(n)
-            
+        for fromId in range(self.nPoints):            
             n = random.randrange(self.nPoints)
             
             while fromId == n or n in self.pAll[fromId].links:
                 n = random.randrange(self.nPoints)
+                
             ilinks = ilinks + 1    
             self.pAll[fromId].links.append(n)
             self.pAll[n].follower.append(fromId)
 
         
         if ilinks < self.nLinks:
-            #for i in range(ilinks,self.nLinks+1):
             while ilinks < self.nLinks:
                 
                 fromId =random.randrange(0,self.nPoints)
                 n = random.randrange(self.nPoints)
-                #print fromId,self.pAll[fromId].links
-
                 while fromId == n and n in self.pAll[fromId].links and len(self.pAll[fromId].links) == self.nPoints-1:
-##                    if len(self.pAll[fromId].links) == self.nPoints-1:
-##                        break
                     fromId =random.randrange(0,self.nPoints)
                     n = random.randrange(self.nPoints)
-
-                #print fromId,n,self.pAll[fromId].links
+                    
                 if fromId <> n and n not in self.pAll[fromId].links:
                     self.pAll[fromId].links.append(n)
+                    self.pAll[n].follower.append(fromId)
                     ilinks = ilinks + 1
-                #print ilinks
+
           
 ##    def genLinks(self,nLinks):  
 ##        '''
