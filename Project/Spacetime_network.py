@@ -42,20 +42,20 @@ class Network:
         self.Communities = Communities
         self.Community_Coordinate = CommunityCoordinates_Generator(self.Communities,w,h)
 
-        self.n1 = n1
-        self.n2 = n2
-        self.n3 = n3
-        self.n4 = n4
-
-        self.l1 = l1
-        self.l2 = l2
-        self.l3 = l3
-        self.l4 = l4
-
-        self.p1 = p1
-        self.p2 = p2
-        self.p3 = p3
-        self.p4 = p4
+##        self.n1 = n1
+##        self.n2 = n2
+##        self.n3 = n3
+##        self.n4 = n4
+##
+##        self.l1 = l1
+##        self.l2 = l2
+##        self.l3 = l3
+##        self.l4 = l4
+##
+##        self.p1 = p1
+##        self.p2 = p2
+##        self.p3 = p3
+##        self.p4 = p4
 
         self.Radius = Radius
         self.Half_Radius = Radius/2
@@ -64,40 +64,48 @@ class Network:
             _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
             
             if i == 1:
+                self.n1 = n1
+                self.l1 = l1
+                self.p1 = p1
+                
                 self.canvas.itemconfig(_polygon,fill="#fff") ##d47284
-
                 self.s1 = Simulator(self.n1)
                 self.s1.genPoints(self.Community_Coordinate[1])           
                 self.s1.genLinks(l1)
-                
                 self.__drawElements(self.s1,self.n1,self.p1)
                                 
             if i ==2:
+                self.n2 = n2
+                self.l2 = l2
+                self.p2 = p2
+                
                 self.canvas.itemconfig(_polygon,fill="#fff") #b0ff01
-
                 self.s2 = Simulator(self.n2)
                 self.s2.genPoints(self.Community_Coordinate[i])           
                 self.s2.genLinks(l2)
-                
                 self.__drawElements(self.s2,self.n2,self.p2)
 
             if i ==3:
+                self.n3 = n3
+                self.l3 = l3
+                self.p3 = p3
+                
                 self.canvas.itemconfig(_polygon,fill="#fff") #4d1b7b
-
                 self.s3 = Simulator(self.n3)
                 self.s3.genPoints(self.Community_Coordinate[i])           
                 self.s3.genLinks(l3)
-                
                 self.__drawElements(self.s3,self.n3,self.p3)
 
                     
             if i ==4:
-                self.canvas.itemconfig(_polygon,fill="#fff")#3279d3
+                self.n4 = n4
+                self.l4 = l4
+                self.p4 = p4
                 
+                self.canvas.itemconfig(_polygon,fill="#fff")#3279d3
                 self.s4 = Simulator(self.n4)
                 self.s4.genPoints(self.Community_Coordinate[i])           
                 self.s4.genLinks(l4)
-                
                 self.__drawElements(self.s4,self.n4,self.p4)
 
     def __drawElements(self,s,n,p):

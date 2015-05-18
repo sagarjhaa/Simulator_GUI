@@ -7,7 +7,7 @@ def CommunityCoordinates_Generator(Communities,w,h):
         Community_Coordinate={}
     
         if Communities == 1:
-            poly = [10,10,Width,10,Width,Height,10,Height]
+            poly = [10,10,w-170,10,w-170,h-100,10,h-100]
             tempXlist = [poly[x] for x in range(len(poly)) if x%2 ==0]
             tempYlist = [poly[x+1] for x in range(len(poly)) if x%2 ==0]
             Community_Coordinate[Communities] = poly,tempXlist,tempYlist
@@ -15,7 +15,7 @@ def CommunityCoordinates_Generator(Communities,w,h):
         
         if Communities == 2:
             
-            poly = [10,10,Half_Width,10,Half_Width,Height,10,Height]
+            poly = [10,10,Half_Width,10,Half_Width,h-100,10,h-100]
             tempXlist = [poly[x] for x in range(len(poly)) if x%2 ==0]
             tempYlist = [poly[x+1] for x in range(len(poly)) if x%2 ==0]
             Community_Coordinate[Communities-1] = poly,tempXlist,tempYlist
