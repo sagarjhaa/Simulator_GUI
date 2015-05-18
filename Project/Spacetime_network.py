@@ -71,52 +71,9 @@ class Network:
                 self.s1.genLinks(l1)
                 
                 self.__drawElements(self.s1,self.n1,self.p1)
-                
-##                for jNode in range(len(self.Point_List1)):
-##                    
-##                    #Cross Checking
-####                    print "Node ID: ",jNode ,"::","Per.Follow: ",(100*len(s1.pAll[jNode].links))/n1,"%","::","Per.Follower: ",(100*len(s1.pAll[jNode].follower))/n1
-####                    print "Follow:  ",len(s1.pAll[jNode].links),s1.pAll[jNode].links
-####                    print "Follower:",len(s1.pAll[jNode].follower),s1.pAll[jNode].follower
-####                    print "-"* 50
-##
-##                    lenFollower = len(self.s1.pAll[jNode].follower)
-##
-##                    if lenFollower == 0:
-##                        lenFollower = 1
-##                    
-##                    if (100*lenFollower)/self.n1 >= self.p1:
-##                        _oval = self.canvas.create_oval(self.Point_List1[jNode].x,
-##                                                        self.Point_List1[jNode].y,
-##                                                        self.Point_List1[jNode].x + (self.Radius + (100 * lenFollower)/n1),
-##                                                        self.Point_List1[jNode].y + (self.Radius + (100 * lenFollower)/n1),
-##                                                        outline="black",
-##                                                        fill=self.Point_List1[jNode].color,
-##                                                        width=2,
-##                                                        activefill="green") #Point_List1[jNode].color
-##                    else:
-##                        _oval = self.canvas.create_oval(self.Point_List1[jNode].x,
-##                                                        self.Point_List1[jNode].y,
-##                                                        self.Point_List1[jNode].x + (self.Radius),
-##                                                        self.Point_List1[jNode].y + (self.Radius),
-##                                                        outline="black",width=2,
-##                                                        activefill="green",
-##                                                        fill="")#Point_List[jNode].color
-##                    if (100*lenFollower)/self.n1 >= self.p1:
-##                        for iNode in range(len(self.s1.pAll[jNode].follower)):
-##                            
-##                            ToNode= self.s1.pAll[jNode].follower[iNode]
-##                            self.canvas.create_line(self.Point_List1[jNode].x + self.Half_Radius,
-##                                                    self.Point_List1[jNode].y + self.Half_Radius,
-##                                                    self.Point_List1[ToNode].x + self.Half_Radius,
-##                                                    self.Point_List1[ToNode].y + self.Half_Radius,
-##                                                    fill=self.Point_List1[ToNode].color,
-##                                                    dash=(4, 4),
-##                                                    tags = i,arrow="first",
-##                                                    activewidth=3)
-                
+                                
             if i ==2:
-                self.canvas.itemconfig(_polygon,fill="#b0ff01")
+                self.canvas.itemconfig(_polygon,fill="#fff") #b0ff01
 
                 self.s2 = Simulator(self.n2)
                 self.s2.genPoints(self.Community_Coordinate[i])           
@@ -125,7 +82,7 @@ class Network:
                 self.__drawElements(self.s2,self.n2,self.p2)
 
             if i ==3:
-                self.canvas.itemconfig(_polygon,fill="#4d1b7b")
+                self.canvas.itemconfig(_polygon,fill="#fff") #4d1b7b
 
                 self.s3 = Simulator(self.n3)
                 self.s3.genPoints(self.Community_Coordinate[i])           
@@ -135,7 +92,7 @@ class Network:
 
                     
             if i ==4:
-                self.canvas.itemconfig(_polygon,fill="#3279d3")
+                self.canvas.itemconfig(_polygon,fill="#fff")#3279d3
                 
                 self.s4 = Simulator(self.n4)
                 self.s4.genPoints(self.Community_Coordinate[i])           
@@ -179,19 +136,19 @@ class Network:
                                                 outline="black",width=2,
                                                 activefill="green",
                                                 fill="")#Point_List[jNode].color
-            if (100*lenFollower)/n1 >= self.p1:
-                for iNode in range(len(self.s.pAll[jNode].follower)):
-                    
-                    ToNode= self.s.pAll[jNode].follower[iNode]
-                    self.canvas.create_line(self.s.pAll[jNode].x + self.Half_Radius,
-                                            self.s.pAll[jNode].y + self.Half_Radius,
-                                            self.s.pAll[ToNode].x + self.Half_Radius,
-                                            self.s.pAll[ToNode].y + self.Half_Radius,
-                                            fill=self.s.pAll[ToNode].color,
-                                            dash=(4, 4),
-                                            arrow="first",
-                                            activewidth=3)
-        
+            #if (100*lenFollower)/n1 >= self.p1:
+            for iNode in range(len(self.s.pAll[jNode].follower)):
+                
+                ToNode= self.s.pAll[jNode].follower[iNode]
+                self.canvas.create_line(self.s.pAll[jNode].x + self.Half_Radius,
+                                        self.s.pAll[jNode].y + self.Half_Radius,
+                                        self.s.pAll[ToNode].x + self.Half_Radius,
+                                        self.s.pAll[ToNode].y + self.Half_Radius,
+                                        fill=self.s.pAll[jNode].color,
+                                        dash=(4, 4),
+                                        arrow="first",
+                                        activewidth=3)
+    
 
     def nodeConverter(self,widget_id):
 
@@ -240,13 +197,12 @@ class Settings:
         self.No_Nodes_Scale.bind("<ButtonRelease-1>",self.changeCommunities)#,self.update_beta_2
         self.No_Nodes_Scale.grid(row=1,column=1)
 
+        ##############################################################################################################################
         #Node Control - 1
         self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
         self.spinbox_Label.grid(row=2, column=0)
-
         self.spinbox_Label= tk.Label(top,text='Nodes 1:')
         self.spinbox_Label.grid(row=3, column=0)
-
         self.No_Nodes_Scale1 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale1.set(n1)
         self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_n1)#,self.update_beta_2
@@ -255,63 +211,103 @@ class Settings:
         #Link Control - 1
         self.spinbox_Label= tk.Label(top, text='Number of Links?')
         self.spinbox_Label.grid(row=2, column=2)
-
-        self.spinbox_Label= tk.Label(top,text='Links 1:')
-        self.spinbox_Label.grid(row=3, column=2)
-
         self.No_Nodes_Scale1 = tk.Scale(top,from_=n1, to=(n1*(n1-1)),orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale1.set(n1)
-        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_l1)#,self.update_beta_2
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeLinks_l1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=2)
 
         #Opinion Leader Control - 1
         self.spinbox_Label= tk.Label(top, text='Opinion Leader Percentage')
         self.spinbox_Label.grid(row=2, column=4)
-
-        #self.spinbox_Label= tk.Label(top,text='Opinion Leader Percentage:')
-        #self.spinbox_Label.grid(row=3, column=4)
-
         self.No_Nodes_Scale1 = tk.Scale(top,from_=1, to=100,orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale1.set(p1)
-        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeP1)#,self.update_beta_2
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.change_p1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=4)
-        
+
+        ##############################################################################################################################
         #Node Control - 2
-        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
-        self.spinbox_Label.grid(row=4, column=0)
-
-        self.spinbox_Label= tk.Label(top,text='Nodes 2:')
-        self.spinbox_Label.grid(row=5, column=0)
-
+        self.spinbox_Label2= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label2.grid(row=4, column=0)
+        self.spinbox_Label2= tk.Label(top,text='Nodes 2:')
+        self.spinbox_Label2.grid(row=5, column=0)
         self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale2.set(5)
         self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n2)#,self.update_beta_2
         self.No_Nodes_Scale2.grid(row=5,column=1)
 
+        #Link Control - 2
+        self.spinbox_Label2= tk.Label(top, text='Number of Links?')
+        self.spinbox_Label2.grid(row=4, column=2)
+        self.No_Nodes_Scale2 = tk.Scale(top,from_=n2, to=(n2*(n2-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(n2)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeLinks_l2)#,self.update_beta_2
+        self.No_Nodes_Scale2.grid(row=5,column=2)
+
+        #Opinion Leader Control - 2
+        self.spinbox_Label2= tk.Label(top, text='Opinion Leader Percentage')
+        self.spinbox_Label2.grid(row=4, column=4)
+        self.No_Nodes_Scale2 = tk.Scale(top,from_=1, to=100,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(p2)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.change_p2)#,self.update_beta_2
+        self.No_Nodes_Scale2.grid(row=5,column=4)
+
+        ##############################################################################################################################
         #Node Control - 3
-        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
-        self.spinbox_Label.grid(row=6, column=0)
+        self.spinbox_Label3= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label3.grid(row=6, column=0)
+        self.spinbox_Label3= tk.Label(top,text='Nodes 3:')
+        self.spinbox_Label3.grid(row=7, column=0)
+        self.No_Nodes_Scale3 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale3.set(5)
+        self.No_Nodes_Scale3.bind("<ButtonRelease-1>",self.changeNodes_n3)#,self.update_beta_2
+        self.No_Nodes_Scale3.grid(row=7,column=1)
 
-        self.spinbox_Label= tk.Label(top,text='Nodes 3:')
-        self.spinbox_Label.grid(row=7, column=0)
+        #Link Control - 3
+        self.spinbox_Label3= tk.Label(top, text='Number of Links?')
+        self.spinbox_Label3.grid(row=6, column=2)
+        self.No_Nodes_Scale3 = tk.Scale(top,from_=n2, to=(n2*(n2-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale3.set(n3)
+        self.No_Nodes_Scale3.bind("<ButtonRelease-1>",self.changeLinks_l3)
+        self.No_Nodes_Scale3.grid(row=7,column=2)
 
-        self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale2.set(5)
-        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n3)#,self.update_beta_2
-        self.No_Nodes_Scale2.grid(row=7,column=1)
+        #Opinion Leader Control - 3
+        self.spinbox_Label3= tk.Label(top, text='Opinion Leader Percentage')
+        self.spinbox_Label3.grid(row=6, column=4)
+        self.No_Nodes_Scale3 = tk.Scale(top,from_=1, to=100,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale3.set(p3)
+        self.No_Nodes_Scale3.bind("<ButtonRelease-1>",self.change_p3)
+        self.No_Nodes_Scale3.grid(row=7,column=4)
 
+        ##############################################################################################################################
         #Node Control - 4
-        self.spinbox_Label= tk.Label(top, text='Number of Nodes?')
-        self.spinbox_Label.grid(row=8, column=0)
+        self.spinbox_Label4= tk.Label(top, text='Number of Nodes?')
+        self.spinbox_Label4.grid(row=8, column=0)
 
-        self.spinbox_Label= tk.Label(top,text='Nodes 4:')
-        self.spinbox_Label.grid(row=9, column=0)
+        self.spinbox_Label4= tk.Label(top,text='Nodes 4:')
+        self.spinbox_Label4.grid(row=9, column=0)
 
-        self.No_Nodes_Scale2 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
-        self.No_Nodes_Scale2.set(5)
-        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeNodes_n4)#,self.update_beta_2
-        self.No_Nodes_Scale2.grid(row=9,column=1)
+        self.No_Nodes_Scale4 = tk.Scale(top,from_=2, to=200,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale4.set(5)
+        self.No_Nodes_Scale4.bind("<ButtonRelease-1>",self.changeNodes_n4)#,self.update_beta_2
+        self.No_Nodes_Scale4.grid(row=9,column=1)
 
+        #Link Control - 4
+        self.spinbox_Label4= tk.Label(top, text='Number of Links?')
+        self.spinbox_Label4.grid(row=8, column=2)
+        self.No_Nodes_Scale4 = tk.Scale(top,from_=n4, to=(n4*(n4-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale4.set(n4)
+        self.No_Nodes_Scale4.bind("<ButtonRelease-1>",self.changeLinks_l4)
+        self.No_Nodes_Scale4.grid(row=9,column=2)
+
+        #Opinion Leader Control - 4
+        self.spinbox_Label4= tk.Label(top, text='Opinion Leader Percentage')
+        self.spinbox_Label4.grid(row=8, column=4)
+        self.No_Nodes_Scale4 = tk.Scale(top,from_=1, to=100,orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale4.set(p4)
+        self.No_Nodes_Scale4.bind("<ButtonRelease-1>",self.change_p4)
+        self.No_Nodes_Scale4.grid(row=9,column=4)
+
+        ##############################################################################################################################
         #Radius Control
         self.spinbox_Label= tk.Label(top, text='Radius of Nodes?')
         self.spinbox_Label.grid(row=10, column=0)
@@ -329,54 +325,101 @@ class Settings:
         global Communities
         Communities = event.widget.get()
         MG=Network(root) #This just generates a new Network with original coordinates
-    
+        
+    ##############################################################################################################################
     def changeNodes_n1(self,event):
         global n1,l1
         n1 = event.widget.get()
         l1 = n1
-        #print scale        
         MG=Network(root) #This just generates a new Network with original coordinates
 
-        self.spinbox_Label= tk.Label(self.top, text='Number of Links?')
-        self.spinbox_Label.grid(row=2, column=2)
-
-        self.spinbox_Label= tk.Label(self.top,text='Links 1:')
-        self.spinbox_Label.grid(row=3, column=2)
+        #self.spinbox_Label= tk.Label(self.top, text='Number of Links?')
+        #self.spinbox_Label.grid(row=2, column=2)
 
         self.No_Nodes_Scale1 = tk.Scale(self.top,from_=n1, to=(n1*(n1-1)),orient=HORIZONTAL,length=200)
         self.No_Nodes_Scale1.set(n1)
-        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_l1)#,self.update_beta_2
+        self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeLinks_l1)
         self.No_Nodes_Scale1.grid(row=3,column=2)
 
-    def changeNodes_l1(self,event):
+    def changeLinks_l1(self,event):
         global l1
         l1 = event.widget.get()
         #print scale        
-        MG=Network(root) #This just generates a new Network with original coordinates
+        MG=Network(root) 
 
-    def changeP1(self,event):
+    def change_p1(self,event):
         global p1
         p1 = event.widget.get()
-        MG=Network(root) #This just generates a new Network with original coordinates
-        
+        MG=Network(root) 
+
+    ##############################################################################################################################    
     def changeNodes_n2(self,event):
         global n2
         n2 = event.widget.get()
-        #print scale
         MG=Network(root) #This just generates a new Network with original coordinates
-        
+
+        self.No_Nodes_Scale2 = tk.Scale(self.top,from_=n2, to=(n2*(n2-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale2.set(n2)
+        self.No_Nodes_Scale2.bind("<ButtonRelease-1>",self.changeLinks_l2)
+        self.No_Nodes_Scale2.grid(row=5,column=2)
+
+
+    def changeLinks_l2(self,event):
+        global l2
+        l2 = event.widget.get()
+        MG=Network(root) 
+
+    def change_p2(self,event):
+        global p2
+        p2 = event.widget.get()
+        MG=Network(root) 
+
+    ##############################################################################################################################    
     def changeNodes_n3(self,event):
         global n3
         n3 = event.widget.get()
-        #print scale
-        MG=Network(root) #This just generates a new Network with original coordinates
+        MG=Network(root) 
+        
+        self.No_Nodes_Scale3 = tk.Scale(self.top,from_=n3, to=(n3*(n3-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale3.set(n3)
+        self.No_Nodes_Scale3.bind("<ButtonRelease-1>",self.changeLinks_l3)
+        self.No_Nodes_Scale3.grid(row=7,column=2)
 
+
+    def changeLinks_l3(self,event):
+        global l3
+        l3 = event.widget.get()
+        MG=Network(root) 
+
+    def change_p3(self,event):
+        global p3
+        p3 = event.widget.get()
+        MG=Network(root)
+
+    ##############################################################################################################################
     def changeNodes_n4(self,event):
         global n4
         n4 = event.widget.get()
         #print scale
-        MG=Network(root) #This just generates a new Network with original coordinates
+        MG=Network(root)
 
+        self.No_Nodes_Scale4 = tk.Scale(self.top,from_=n4, to=(n3*(n4-1)),orient=HORIZONTAL,length=200)
+        self.No_Nodes_Scale4.set(n4)
+        self.No_Nodes_Scale4.bind("<ButtonRelease-1>",self.changeLinks_l4)
+        self.No_Nodes_Scale4.grid(row=9,column=2)
+
+
+    def changeLinks_l4(self,event):
+        global l4
+        l4 = event.widget.get()
+        MG=Network(root) 
+
+    def change_p4(self,event):
+        global p4
+        p4 = event.widget.get()
+        MG=Network(root)
+
+    ##############################################################################################################################
     def changeRadius(self,event):
         global Radius
         Radius = event.widget.get()
