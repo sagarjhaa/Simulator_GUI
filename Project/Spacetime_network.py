@@ -8,8 +8,6 @@ from diffuse.Simulator import Simulator
 
 Communities = 4
 n1 = 5
-n11 = 0
-
 n2 = 5
 n3 = 5
 n4 = 5
@@ -20,6 +18,9 @@ l3 = 5
 l4 = 5
 
 p1 = 40
+p2 = 40
+p3 = 40
+p4 = 40
 
 Radius = 20
 
@@ -46,6 +47,16 @@ class Network:
         self.n3 = n3
         self.n4 = n4
 
+        self.l1 = l1
+        self.l2 = l2
+        self.l3 = l3
+        self.l4 = l4
+
+        self.p1 = p1
+        self.p2 = p2
+        self.p3 = p3
+        self.p4 = p4
+
         self.Radius = Radius
         self.Half_Radius = Radius/2
         
@@ -55,65 +66,132 @@ class Network:
             if i == 1:
                 self.canvas.itemconfig(_polygon,fill="#fff") ##d47284
 
-                s1 = Simulator(self.n1)
-                Point_List1=[]
-                s1.genPoints(self.Community_Coordinate[1])           
-                s1.genLinks(l1)
-                Point_List1=s1.pAll
-
-                for jNode in range(len(Point_List1)):
-                    
-                    #Cross Checking
-##                    print "Node ID: ",jNode ,"::","Per.Follow: ",(100*len(s1.pAll[jNode].links))/n1,"%","::","Per.Follower: ",(100*len(s1.pAll[jNode].follower))/n1
-##                    print "Follow:  ",len(s1.pAll[jNode].links),s1.pAll[jNode].links
-##                    print "Follower:",len(s1.pAll[jNode].follower),s1.pAll[jNode].follower
-##                    print "-"* 50
-
-                    lenFollower = len(s1.pAll[jNode].follower)
-
-                    if lenFollower == 0:
-                        lenFollower = 2
-                    
-                    if (100*lenFollower)/n1 >= p1:
-                        _oval = self.canvas.create_oval(Point_List1[jNode].x,
-                                                        Point_List1[jNode].y,
-                                                        Point_List1[jNode].x + ((self.Radius * lenFollower)/2),
-                                                        Point_List1[jNode].y + ((self.Radius * lenFollower)/2),
-                                                        outline="black",
-                                                        fill=Point_List1[jNode].color,
-                                                        width=2,
-                                                        activefill="green")
-                    else:
-                        _oval = self.canvas.create_oval(Point_List1[jNode].x,
-                                                        Point_List1[jNode].y,
-                                                        Point_List1[jNode].x + ((self.Radius * lenFollower)/2),
-                                                        Point_List1[jNode].y + ((self.Radius * lenFollower)/2),
-                                                        outline="black",width=2,
-                                                        activefill="green",
-                                                        fill="Black")#Point_List[jNode].color
-
-                    for iNode in range(len(s1.pAll[jNode].follower)):
-                        
-                        ToNode= s1.pAll[jNode].follower[iNode]
-                        self.canvas.create_line(Point_List1[jNode].x + self.Half_Radius,
-                                                Point_List1[jNode].y + self.Half_Radius,
-                                                Point_List1[ToNode].x + self.Half_Radius,
-                                                Point_List1[ToNode].y + self.Half_Radius,
-                                                fill=Point_List1[jNode].color,
-                                                dash=(4, 4),
-                                                tags = i,arrow="last",
-                                                activewidth=3) #
+                self.s1 = Simulator(self.n1)
+                self.s1.genPoints(self.Community_Coordinate[1])           
+                self.s1.genLinks(l1)
+                
+                self.__drawElements(self.s1,self.n1,self.p1)
+                
+##                for jNode in range(len(self.Point_List1)):
+##                    
+##                    #Cross Checking
+####                    print "Node ID: ",jNode ,"::","Per.Follow: ",(100*len(s1.pAll[jNode].links))/n1,"%","::","Per.Follower: ",(100*len(s1.pAll[jNode].follower))/n1
+####                    print "Follow:  ",len(s1.pAll[jNode].links),s1.pAll[jNode].links
+####                    print "Follower:",len(s1.pAll[jNode].follower),s1.pAll[jNode].follower
+####                    print "-"* 50
+##
+##                    lenFollower = len(self.s1.pAll[jNode].follower)
+##
+##                    if lenFollower == 0:
+##                        lenFollower = 1
+##                    
+##                    if (100*lenFollower)/self.n1 >= self.p1:
+##                        _oval = self.canvas.create_oval(self.Point_List1[jNode].x,
+##                                                        self.Point_List1[jNode].y,
+##                                                        self.Point_List1[jNode].x + (self.Radius + (100 * lenFollower)/n1),
+##                                                        self.Point_List1[jNode].y + (self.Radius + (100 * lenFollower)/n1),
+##                                                        outline="black",
+##                                                        fill=self.Point_List1[jNode].color,
+##                                                        width=2,
+##                                                        activefill="green") #Point_List1[jNode].color
+##                    else:
+##                        _oval = self.canvas.create_oval(self.Point_List1[jNode].x,
+##                                                        self.Point_List1[jNode].y,
+##                                                        self.Point_List1[jNode].x + (self.Radius),
+##                                                        self.Point_List1[jNode].y + (self.Radius),
+##                                                        outline="black",width=2,
+##                                                        activefill="green",
+##                                                        fill="")#Point_List[jNode].color
+##                    if (100*lenFollower)/self.n1 >= self.p1:
+##                        for iNode in range(len(self.s1.pAll[jNode].follower)):
+##                            
+##                            ToNode= self.s1.pAll[jNode].follower[iNode]
+##                            self.canvas.create_line(self.Point_List1[jNode].x + self.Half_Radius,
+##                                                    self.Point_List1[jNode].y + self.Half_Radius,
+##                                                    self.Point_List1[ToNode].x + self.Half_Radius,
+##                                                    self.Point_List1[ToNode].y + self.Half_Radius,
+##                                                    fill=self.Point_List1[ToNode].color,
+##                                                    dash=(4, 4),
+##                                                    tags = i,arrow="first",
+##                                                    activewidth=3)
                 
             if i ==2:
                 self.canvas.itemconfig(_polygon,fill="#b0ff01")
 
+                self.s2 = Simulator(self.n2)
+                self.s2.genPoints(self.Community_Coordinate[i])           
+                self.s2.genLinks(l2)
+                
+                self.__drawElements(self.s2,self.n2,self.p2)
+
             if i ==3:
                 self.canvas.itemconfig(_polygon,fill="#4d1b7b")
+
+                self.s3 = Simulator(self.n3)
+                self.s3.genPoints(self.Community_Coordinate[i])           
+                self.s3.genLinks(l3)
+                
+                self.__drawElements(self.s3,self.n3,self.p3)
 
                     
             if i ==4:
                 self.canvas.itemconfig(_polygon,fill="#3279d3")
+                
+                self.s4 = Simulator(self.n4)
+                self.s4.genPoints(self.Community_Coordinate[i])           
+                self.s4.genLinks(l4)
+                
+                self.__drawElements(self.s4,self.n4,self.p4)
 
+    def __drawElements(self,s,n,p):
+
+        self.s = s
+        self.n = n
+        self.p = p
+
+        for jNode in range(len(self.s.pAll)):
+
+            #Cross Checking
+##            print "Node ID: ",jNode ,"::","Per.Follow: ",(100*len(self.s.pAll[jNode].links))/n1,"%","::","Per.Follower: ",(100*len(self.s.pAll[jNode].follower))/n1
+##            print "Follow:  ",len(self.s.pAll[jNode].links),self.s.pAll[jNode].links
+##            print "Follower:",len(self.s.pAll[jNode].follower),self.s.pAll[jNode].follower
+##            print "-"* 50
+
+            lenFollower = len(self.s.pAll[jNode].follower)
+
+            if lenFollower == 0:
+                lenFollower = 1
+            
+            if (100*lenFollower)/self.n >= self.p:
+                _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
+                                                self.s.pAll[jNode].y,
+                                                self.s.pAll[jNode].x + (self.Radius + (50 * lenFollower)/self.n),
+                                                self.s.pAll[jNode].y + (self.Radius + (50 * lenFollower)/self.n),
+                                                outline="black",
+                                                fill=self.s.pAll[jNode].color,
+                                                width=2,
+                                                activefill="green") #Point_List1[jNode].color
+            else:
+                _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
+                                                self.s.pAll[jNode].y,
+                                                self.s.pAll[jNode].x + (self.Radius),
+                                                self.s.pAll[jNode].y + (self.Radius),
+                                                outline="black",width=2,
+                                                activefill="green",
+                                                fill="")#Point_List[jNode].color
+            if (100*lenFollower)/n1 >= self.p1:
+                for iNode in range(len(self.s.pAll[jNode].follower)):
+                    
+                    ToNode= self.s.pAll[jNode].follower[iNode]
+                    self.canvas.create_line(self.s.pAll[jNode].x + self.Half_Radius,
+                                            self.s.pAll[jNode].y + self.Half_Radius,
+                                            self.s.pAll[ToNode].x + self.Half_Radius,
+                                            self.s.pAll[ToNode].y + self.Half_Radius,
+                                            fill=self.s.pAll[ToNode].color,
+                                            dash=(4, 4),
+                                            arrow="first",
+                                            activewidth=3)
+        
 
     def nodeConverter(self,widget_id):
 
@@ -186,7 +264,7 @@ class Settings:
         self.No_Nodes_Scale1.bind("<ButtonRelease-1>",self.changeNodes_l1)#,self.update_beta_2
         self.No_Nodes_Scale1.grid(row=3,column=2)
 
-        #Opnion Leader Control - 1
+        #Opinion Leader Control - 1
         self.spinbox_Label= tk.Label(top, text='Opinion Leader Percentage')
         self.spinbox_Label.grid(row=2, column=4)
 

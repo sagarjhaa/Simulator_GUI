@@ -68,7 +68,6 @@ class Simulator:
         generate links
         '''
         self.nLinks = nLinks
-        print "nlinks: ",nLinks
         tempLinks = 0
         
         for fromId in range(self.nPoints):            
@@ -83,7 +82,6 @@ class Simulator:
 
         if tempLinks < self.nLinks:
             self.genRandomLinks(tempLinks)
-            print "nlinks: ",nLinks
 
     def genRandomLinks(self,tempLinks):
         '''
@@ -101,5 +99,3 @@ class Simulator:
                 self.pAll[n].follower.append(fromId)
                 #ilinks = ilinks + 1
                 tempLinks = tempLinks + 1
-
-        print tempLinks
