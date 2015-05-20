@@ -6,8 +6,8 @@ from Community_Coordinates import CommunityCoordinates_Generator
 #from diffusion.SimulatorExperimence import SimulatorExperimence
 from diffuse.Simulator import Simulator
 
-import matplotlib.pyplot as plt
-import networkx as nx
+import nodebox.graphics as nbg
+import graph2
 
 Communities = 4
 n1 = 5
@@ -27,11 +27,11 @@ p4 = 40
 
 Radius = 20
 
+Widget_to_Node = {}
+
 class Network:
 
     def __init__(self,master=None):
-
-        global n1,n11
 
         self.master = master
         self.master.title("Network Simulator")
@@ -40,7 +40,6 @@ class Network:
         self.master.columnconfigure(0,weight=1)
         self.canvas = Canvas(self.master,width=w,height=h,bg="grey")
         self.canvas.grid(row=0,rowspan=1,column=0)
-        
         self.Community_Coordinate = {}
         self.Communities = Communities
         self.Community_Coordinate = CommunityCoordinates_Generator(self.Communities,w,h)
@@ -72,10 +71,10 @@ class Network:
                 self.p1 = p1
                 
                 self.canvas.itemconfig(_polygon,fill="#fff") ##d47284
-##                self.s1 = Simulator(self.n1)
-##                self.s1.genPoints(self.Community_Coordinate[1])           
-##                self.s1.genLinks(l1)
-##                self.__drawElements(self.s1,self.n1,self.p1)
+                self.s1 = Simulator(self.n1)
+                self.s1.genPoints(self.Community_Coordinate[1])           
+                self.s1.genLinks(l1)
+                self.__drawElements(self.s1,self.n1,self.p1)
                                 
             if i ==2:
                 self.n2 = n2
@@ -139,6 +138,11 @@ class Network:
                                                 fill=self.s.pAll[jNode].color,
                                                 width=2,
                                                 activefill="green") #Point_List1[jNode].color
+                Widget_to_Node[_oval]= jNode
+                self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
+                
+                print "T1: ",jNode
+                print "Follower: ",self.s.pAll[jNode].follower
             else:
                 _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
                                                 self.s.pAll[jNode].y,
@@ -148,18 +152,18 @@ class Network:
                                                 activefill="green",
                                                 fill="")#Point_List[jNode].color
             #if (100*lenFollower)/n1 >= self.p1:
-            for iNode in range(len(self.s.pAll[jNode].follower)):
-                
-                ToNode= self.s.pAll[jNode].follower[iNode]
-                self.canvas.create_line(self.s.pAll[jNode].x + self.Half_Radius,
-                                        self.s.pAll[jNode].y + self.Half_Radius,
-                                        self.s.pAll[ToNode].x + self.Half_Radius,
-                                        self.s.pAll[ToNode].y + self.Half_Radius,
-                                        fill=self.s.pAll[jNode].color,
-                                        dash=(4, 4),
-                                        arrow="first",
-                                        activewidth=3)
-    
+##            for iNode in range(len(self.s.pAll[jNode].follower)):
+##                
+##                ToNode= self.s.pAll[jNode].follower[iNode]
+##                self.canvas.create_line(self.s.pAll[jNode].x + self.Half_Radius,
+##                                        self.s.pAll[jNode].y + self.Half_Radius,
+##                                        self.s.pAll[ToNode].x + self.Half_Radius,
+##                                        self.s.pAll[ToNode].y + self.Half_Radius,
+##                                        fill=self.s.pAll[jNode].color,
+##                                        dash=(4, 4),
+##                                        arrow="first",
+##                                        activewidth=3)
+##    
 
     def nodeConverter(self,widget_id):
 
@@ -174,22 +178,30 @@ class Network:
         
     def __showLinkInfo(self,event):
         widget_id = event.widget.find_closest(event.x,event.y)
-        if widget_id[0]  <> 1:
-            pNode = self.nodeConverter(widget_id[0])
-            print "Node is:",pNode
+        jNode = Widget_to_Node[widget_id[0]]
+        print jNode,self.s1.pAll[jNode].follower
 
-            #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
-            Nodes_Id = self.Nodes.keys()
-            for i in range(len(Nodes_Id)):
-                self.canvas.itemconfig(Nodes_Id[i],fill="")
-                
-            try:
-                if len(self.Links[widget_id[0]]) > 0:
-                    for i in range(len(self.Links[widget_id[0]])):
-                        print self.nodeConverter(self.Links[widget_id[0]][i]),"--->",pNode
-                        self.canvas.itemconfig(self.Links[widget_id[0]][i],fill="red")
-            except:
-                pass
+        graph2.create_graph(jNode,self.s1.pAll[jNode].follower)
+        nbg.canvas.clear
+        nbg.canvas.fullscreen = True
+        nbg.canvas.run(graph2.draw)
+        
+##        if widget_id[0]  <> 1:
+##            pNode = self.nodeConverter(widget_id[0])
+##            print "Node is:",pNode
+##
+##            #self.canvas.itemconfig(widget_id[0],fill="red")   #important Line
+##            Nodes_Id = self.Nodes.keys()
+##            for i in range(len(Nodes_Id)):
+##                self.canvas.itemconfig(Nodes_Id[i],fill="")
+##                
+##            try:
+##                if len(self.Links[widget_id[0]]) > 0:
+##                    for i in range(len(self.Links[widget_id[0]])):
+##                        print self.nodeConverter(self.Links[widget_id[0]][i]),"--->",pNode
+##                        self.canvas.itemconfig(self.Links[widget_id[0]][i],fill="red")
+##            except:
+##                pass
         
 class Settings:
     def __init__(self, parent):
