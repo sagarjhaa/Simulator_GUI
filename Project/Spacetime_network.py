@@ -7,7 +7,7 @@ from Community_Coordinates import CommunityCoordinates_Generator
 from diffuse.Simulator import Simulator
 
 import nodebox.graphics as nbg
-import graph2
+import nodebox_graph
 
 Communities = 4
 n1 = 5
@@ -141,8 +141,8 @@ class Network:
                 Widget_to_Node[_oval]= jNode
                 self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
                 
-                print "T1: ",jNode
-                print "Follower: ",self.s.pAll[jNode].follower
+                #print "T1: ",jNode
+                #print "Follower: ",self.s.pAll[jNode].follower
             else:
                 _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
                                                 self.s.pAll[jNode].y,
@@ -179,12 +179,13 @@ class Network:
     def __showLinkInfo(self,event):
         widget_id = event.widget.find_closest(event.x,event.y)
         jNode = Widget_to_Node[widget_id[0]]
-        print jNode,self.s1.pAll[jNode].follower
+        #print jNode,self.s1.pAll[jNode].follower
 
-        graph2.create_graph(jNode,self.s1.pAll[jNode].follower)
+        nodebox_graph.create_graph(jNode,self.s1)
         nbg.canvas.clear
+        #nbg.canvas.size = 700,700
         nbg.canvas.fullscreen = True
-        nbg.canvas.run(graph2.draw)
+        nbg.canvas.run(nodebox_graph.draw)
         
 ##        if widget_id[0]  <> 1:
 ##            pNode = self.nodeConverter(widget_id[0])

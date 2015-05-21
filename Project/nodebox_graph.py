@@ -1,6 +1,8 @@
 from nodebox.graphics import *
 from nodebox.graphics.physics import Node, Edge, Graph
 
+import random as rd
+
 # Create a graph with randomly connected nodes.
 # Nodes and edges can be styled with fill, stroke, strokewidth parameters.
 # Each node displays its id as a text label, stored as a Text object in Node.text.
@@ -8,27 +10,68 @@ from nodebox.graphics.physics import Node, Edge, Graph
 g = Graph()
 # Random nodes.
 
-def create_graph(d_nodes,d_links):
-
-    d_links.append(d_nodes)
+def create_graph(p_node,s):
+    p = p_node
     
-    for i in range(len(d_links)):#100
-        g.add_node(id=str(d_links[i]), 
+    temp = s.pAll[p_node].follower
+
+    g.add_node(id=str(p_node),radius = 5,stroke = color(1),text = color(1))
+
+    
+    for i in range(len(temp)):#100
+        g.add_node(id=str(temp[i]), 
             radius = 5,
             stroke = color(1), 
               text = color(1))
-##    g.add_node(id=str(d_nodes), 
-##            radius = 5,
-##            stroke = color(1), 
-##              text = color(1))
+    
     # Random edges.
-    for i in range(len(d_links)-1):#1,100
-        node1 = str(d_links[-1])#choice(g.nodes)
-        node2 = str(d_links[i])#choice(g.nodes)
-        g.add_edge(node1, node2, 
-            length = 200.0, 
-            weight = random(), 
-            stroke = color(1, 0, 0.25, 0.75))
+    p_links = s.pAll[p_node].follower
+    for i in range(len(p_links)):
+        node1 = str(p_node)#choice(g.nodes)
+        node2 = str(p_links[i])#choice(g.nodes)
+        g.add_edge(node1, node2,
+                   length = 500.0,
+                   weight = random(),
+                   stroke = color(1, 0, 0.25, 0.75))
+
+
+    #New Round
+    for I in range(3):
+        
+        p_node = s.pAll[p].follower[I] #0
+        p_links = s.pAll[p_node].follower
+
+        r     = rd.choice([0,51,255])#rd.randint(10,200)
+        green = rd.choice([255,128,255]) #rd.randint(0,100)
+        b     = rd.choice([128,0,255])#rd.randint(0,200)
+
+        print r,green,b
+        
+        for i in range(len(p_links)):
+            node1 = str(p_node)#choice(g.nodes)
+
+            bul = True
+            if p_links[i] not in s.pAll[p].follower:  #Not a parent follower
+                
+                for j in range (I):                  #Loop to check another sibling's follower
+                    
+                    sibling = s.pAll[p].follower[j]
+                    
+                    if p_links[i] in s.pAll[sibling].follower:
+
+                        bul = False
+
+                if bul:
+                    g.add_node(id=str(p_links[i]),radius = 5,stroke = color(1),text = color(1))
+                    node2 = str(p_links[i])#choice(g.nodes)
+                    g.add_edge(node1, node2,
+                               length = 50.0,
+                               weight = random(),
+                               stroke = color(r, green, b, 0.75))
+                    
+
+    
+    
 
     # Two handy tricks to prettify the layout:
     # 1) Nodes with a higher weight (i.e. incoming traffic) appear bigger.
@@ -72,11 +115,7 @@ def draw(canvas):
     if dragged:
         #dragged.x = dx
         #dragged.y = dy
-        if dx < 1000:
+        if dx < 500 or dx > 10:
             dragged.x = dx
-        if dy < 1000:
+        if dy < 500 or dy > 10:
             dragged.y = dy
-        
-#canvas.size = 500, 500
-##canvas.fullscreen = True            
-##canvas.run(draw)

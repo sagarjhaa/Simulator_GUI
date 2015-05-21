@@ -22,4 +22,5 @@ class Node:
         self.p=0
         self.color = ""
         self.follower=[]
+        self.cover = False
     
