@@ -66,7 +66,7 @@ class Network:
             _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
             
             if i == 1:
-                self.n1 = n1
+                self.n1 = n1*3
                 self.l1 = l1
                 self.p1 = p1
                 
@@ -180,12 +180,14 @@ class Network:
         widget_id = event.widget.find_closest(event.x,event.y)
         jNode = Widget_to_Node[widget_id[0]]
         #print jNode,self.s1.pAll[jNode].follower
-
+        #import nodebox_graph
+        nbg.canvas = nbg.Canvas(width=640, height=480, name="NodeBox for OpenGL", resizable=False)
         nodebox_graph.create_graph(jNode,self.s1)
         nbg.canvas.clear
         #nbg.canvas.size = 700,700
         nbg.canvas.fullscreen = True
         nbg.canvas.run(nodebox_graph.draw)
+        del nbg.canvas
         
 ##        if widget_id[0]  <> 1:
 ##            pNode = self.nodeConverter(widget_id[0])
@@ -203,7 +205,7 @@ class Network:
 ##                        self.canvas.itemconfig(self.Links[widget_id[0]][i],fill="red")
 ##            except:
 ##                pass
-        
+
 class Settings:
     def __init__(self, parent):
         top = self.top = tk.Toplevel(parent)

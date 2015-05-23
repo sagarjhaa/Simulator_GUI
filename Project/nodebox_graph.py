@@ -7,15 +7,22 @@ import random as rd
 # Nodes and edges can be styled with fill, stroke, strokewidth parameters.
 # Each node displays its id as a text label, stored as a Text object in Node.text.
 # To hide the node label, set the text parameter to None.
+#g =  None
 g = Graph()
+
 # Random nodes.
 
 def create_graph(p_node,s):
+
+    global g
+
+    g = Graph()
+    
     p = p_node
     
     temp = s.pAll[p_node].follower
-
-    g.add_node(id=str(p_node),radius = 5,stroke = color(1),text = color(1))
+    
+    g.add_node(id=str(p_node),radius = 5,stroke = color(1, 0, 0.25, 1),text = color(1))
 
     
     for i in range(len(temp)):#100
@@ -32,20 +39,21 @@ def create_graph(p_node,s):
         g.add_edge(node1, node2,
                    length = 500.0,
                    weight = random(),
-                   stroke = color(1, 0, 0.25, 0.75))
+                   stroke = color(1, 0, 0.25, 1))
 
 
     #New Round
-    for I in range(len(temp)):
+    for I in range(1):
         
         p_node = s.pAll[p].follower[I] #0
         p_links = s.pAll[p_node].follower
 
-        r     = rd.choice([0,51,255])#rd.randint(10,200)
-        green = rd.choice([255,128,255]) #rd.randint(0,100)
-        b     = rd.choice([128,0,255])#rd.randint(0,200)
+        #print [x * 0.01 for x in range(0,100)]
+        r     = rd.choice([x * 0.01 for x in range(0,100)])#rd.choice([0,51,255])    #rd.randint(10,200)
+        green = rd.choice([x * 0.01 for x in range(0,100)]) #rd.choice([255,128,255]) #rd.randint(0,100)
+        b     = rd.choice([x * 0.01 for x in range(0,100)]) #rd.choice([128,0,255])   #rd.randint(0,200)
 
-        print r,green,b
+        #print r,green,b
         
         for i in range(len(p_links)):
             node1 = str(p_node)#choice(g.nodes)
@@ -62,12 +70,12 @@ def create_graph(p_node,s):
                         bul = False
 
                 if bul:
-                    g.add_node(id=str(p_links[i]),radius = 5,stroke = color(1),text = color(1))
+                    g.add_node(id=str(p_links[i]),radius = 5,stroke = color(r, green, b, 1),text = color(1))
                     node2 = str(p_links[i])#choice(g.nodes)
                     g.add_edge(node1, node2,
                                length = 50.0,
                                weight = random(),
-                               stroke = color(r, green, b, 0.75))
+                               stroke = color(r, green, b, 1))
                     
 
     
@@ -76,24 +84,26 @@ def create_graph(p_node,s):
     # Two handy tricks to prettify the layout:
     # 1) Nodes with a higher weight (i.e. incoming traffic) appear bigger.
     for node in g.nodes:
-        node.radius = node.radius + node.radius*node.weight
+        node.radius = 5#node.radius + node.radius*node.weight
     # 2) Nodes with only one connection ("leaf" nodes) have a shorter connection.
     for node in g.nodes:
         if len(node.edges) == 1:
-            node.edges[0].length *= 0.5
+            node.edges[0].length = 0.5
 
     g.prune(depth=0)          # Remove orphaned nodes with no connections.
     g.distance         = 15   # Overall spacing between nodes.
     g.layout.force     = 0.01 # Strength of the attractive & repulsive force.
-    g.layout.repulsion = 10   # Repulsion radius.
+    g.layout.repulsion = 5   # Repulsion radius.
 
     dragged = None
 
 def draw(canvas):
+
+    global g
     
     canvas.clear()
     background(0)
-    translate(600, 600)
+    translate(600, 600) #800,500
     
     # With directed=True, edges have an arrowhead indicating the direction of the connection.
     # With weighted=True, Node.centrality is indicated by a shadow under high-traffic nodes.
@@ -115,7 +125,7 @@ def draw(canvas):
     if dragged:
         #dragged.x = dx
         #dragged.y = dy
-        if dx < 500 or dx > 10:
+        if dx < 1000 or dx > 10:
             dragged.x = dx
-        if dy < 500 or dy > 10:
+        if dy < 1000 or dy > 10:
             dragged.y = dy
