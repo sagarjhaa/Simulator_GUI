@@ -36,7 +36,7 @@ def create_graph(p_node,s):
 
 
     #New Round
-    for I in range(3):
+    for I in range(len(temp)):
         
         p_node = s.pAll[p].follower[I] #0
         p_links = s.pAll[p_node].follower
