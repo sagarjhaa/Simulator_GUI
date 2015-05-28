@@ -9,8 +9,8 @@ from diffuse.Simulator import Simulator
 import nodebox.graphics as nbg
 import nodebox_graph
 
-Communities = 4
-n1 = 5
+Communities = 1
+n1 = 3
 n2 = 5
 n3 = 5
 n4 = 5
@@ -155,6 +155,9 @@ class Network:
                                                 outline="black",width=2,
                                                 activefill="green",
                                                 fill="")#Point_List[jNode].color
+                Widget_to_Node[_oval]= jNode
+                self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
+                
             #if (100*lenFollower)/n1 >= self.p1:
             for iNode in range(len(self.s.pAll[jNode].follower)):
                 5

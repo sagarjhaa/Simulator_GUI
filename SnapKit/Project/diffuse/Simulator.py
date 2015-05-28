@@ -67,7 +67,7 @@ class Simulator:
         #GenRMatEpinions
         
         
-        #Graph = snap.GenFull(snap.PNGraph, self.nPoints)
+        Graph = snap.GenFull(snap.PNGraph, self.nPoints)
         #Graph = snap.GenFull(snap.PUNGraph, 5)
         #Graph = snap.GenFull(snap.PNEANet, 5)
 
@@ -75,7 +75,18 @@ class Simulator:
         #Graph = snap.GenCircle(snap.PUNGraph, 5, 5)
         #Graph = snap.GenCircle(snap.PNEANet, 5, 5)
 
-        Graph = snap.GenGrid(snap.PNGraph, 5, 5, False)
+        #Graph = snap.GenGrid(snap.PNGraph, 5, 5, False)
+
+        #Graph = snap.GenStar(snap.PNGraph, self.nPoints, True)
+        #Graph = snap.GenStar(snap.PUNGraph, self.nPoints, True)
+        #Graph = snap.GenStar(snap.PNEANet, self.nPoints, True)
+
+        #Graph = snap.GenTree(snap.PNGraph, self.nPoints, self.nPoints)
+        #Graph = snap.GenTree(snap.PUNGraph, self.nPoints, self.nPoints)
+        #Graph = snap.GenTree(snap.PNEANet, self.nPoints, self.nPoints)
+
+        #Graph = snap.GenRndGnm(snap.PNGraph, self.nPoints, self.nPoints)
+        #Graph = snap.GenRndGnm(snap.PUNGraph, self.nPoints, self.nPoints)
         
         for i in Graph.Nodes():
 
