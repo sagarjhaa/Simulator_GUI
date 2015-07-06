@@ -177,17 +177,20 @@ class Network:
 
         
     def __showLinkInfo(self,event):
-        widget_id = event.widget.find_closest(event.x,event.y)
-        jNode = Widget_to_Node[widget_id[0]]
-        #print jNode,self.s1.pAll[jNode].follower
-        #import nodebox_graph
-        nbg.canvas = nbg.Canvas(width=640, height=480, name="NodeBox for OpenGL", resizable=False)
-        nodebox_graph.create_graph(jNode,self.s1)
-        nbg.canvas.clear
-        #nbg.canvas.size = 700,700
-        nbg.canvas.fullscreen = True
-        nbg.canvas.run(nodebox_graph.draw)
-        del nbg.canvas
+
+        print "sagar"
+        
+##        widget_id = event.widget.find_closest(event.x,event.y)
+##        jNode = Widget_to_Node[widget_id[0]]
+##        print jNode,self.s1.pAll[jNode].follower
+##        import nodebox_graph
+##        nbg.canvas = nbg.Canvas(width=640, height=480, name="NodeBox for OpenGL", resizable=False)
+##        nodebox_graph.create_graph(jNode,self.s1)
+##        nbg.canvas.clear
+##        #nbg.canvas.size = 700,700
+##        nbg.canvas.fullscreen = True
+##        nbg.canvas.run(nodebox_graph.draw)
+##        del nbg.canvas
         
 ##        if widget_id[0]  <> 1:
 ##            pNode = self.nodeConverter(widget_id[0])
