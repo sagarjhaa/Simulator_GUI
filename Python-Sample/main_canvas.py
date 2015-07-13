@@ -48,7 +48,7 @@ class MainCanvas(object):
         self.canvasRoot = Toplevel()
         self.canvasRoot.title(self.attributeName)
         self.canvasRoot.lower(belowThis = self.root)
-        self.mainCanvas = Canvas(self.canvasRoot, bg = 'white', width = canvasWidth+margin_x, height = canvasHeight+margin_y, scrollregion=('-50c','-50c',"50c","50c") )
+        self.mainCanvas = Canvas(self.canvasRoot, bg = 'black', width = canvasWidth+margin_x, height = canvasHeight+margin_y, scrollregion=('-50c','-50c',"50c","50c") )
         self.__drawShape()
         self.mainCanvas.pack()
         
@@ -128,14 +128,13 @@ class MainCanvas(object):
         for polygon in self.shapes:
             #define an empty xylist for holding converted coordinates
             xylist = []
-            
             # loops through each point and calculate the window coordinates, put in xylist
             for point in polygon.points:
                 pointx = int((point.x -minX)*ratio) + +margin_x/2
                 pointy = int((maxY- point.y)*ratio) + +margin_y/2
                 xylist.append(pointx)
                 xylist.append(pointy)
-            print xylist
+##            print xylist
             """
             polyline.partsIndex is a tuple data type holding the starting points for each
             part. For example, if the polyline.partsIndex of a polyline equals to (0, 4, 9),
@@ -216,19 +215,25 @@ class MainCanvas(object):
                 
                 if area > 0:
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,activefill="blue",fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
-                    #print k,_polygon                   
-                    
-                    if k==0:
-                        _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2,tags = center)
-                        dict1[_oval]=[center.x,center.y]
-                        #_oval1   = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
+                    #print k,_polygon
+                    #Michigan Special Condition according to its 2 parts
+                    if tag_count == 48:
+                        if k==4:
+                            _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2,tags = center)
+                            dict1[_oval]=[center.x,center.y]
+                    else:
+                        if k==0:
+                            #print "Tag Count: ",tag_count," ",self.mainCanvas.gettags(_polygon)[0]
+                            _oval    = self.mainCanvas.create_oval(xCenter, yCenter,xCenter +5,yCenter+ 5, outline="red",fill="green", width=2,tags = center)
+                            dict1[_oval]=[center.x,center.y]
+                            #_oval1   = self.mainCanvas.create_oval(xPoint, yPoint,xPoint +5,yPoint+ 5, outline="red",fill="green", width=2)
                 else:
                     # If it is a hole, fill with the same color as the canvas background color 
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,fill="black",outline="black", tags = self.datalist[tag_count])
-                self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)
-                self.mainCanvas.tag_bind( _oval, '<ButtonPress-1>', self.__showAttriInfo)
+                #self.mainCanvas.tag_bind( _polygon, '<ButtonPress-1>', self.__showAttriInfo)
+                #self.mainCanvas.tag_bind( _oval, '<ButtonPress-1>', self.__showAttriInfo)
             tag_count += 1
-            break
+            
     def __showAttriInfo(self,event):
         """
         Show attribute information of clicked unit

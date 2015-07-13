@@ -66,7 +66,7 @@ class Network:
             _polygon = self.canvas.create_polygon(self.Community_Coordinate[i][0],outline='red',width=2) #fill='#d47284'
             
             if i == 1:
-                self.n1 = n1*3
+                self.n1 = n1
                 self.l1 = l1
                 self.p1 = p1
                 
@@ -129,28 +129,30 @@ class Network:
             if lenFollower == 0:
                 lenFollower = 1
             
-            if (100*lenFollower)/self.n >= self.p:
-                _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
-                                                self.s.pAll[jNode].y,
-                                                self.s.pAll[jNode].x + (self.Radius + (50 * lenFollower)/self.n),
-                                                self.s.pAll[jNode].y + (self.Radius + (50 * lenFollower)/self.n),
-                                                outline="black",
-                                                fill=self.s.pAll[jNode].color,
-                                                width=2,
-                                                activefill="green") #Point_List1[jNode].color
-                Widget_to_Node[_oval]= jNode
-                self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
+            #if (100*lenFollower)/self.n >= self.p:
+            print self.s.pAll[jNode].id,self.s.pAll[jNode].follower
+            _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
+                                            self.s.pAll[jNode].y,
+                                            self.s.pAll[jNode].x + (self.Radius + (50 * lenFollower)/self.n),
+                                            self.s.pAll[jNode].y + (self.Radius + (50 * lenFollower)/self.n),
+                                            outline="black",
+                                            fill=self.s.pAll[jNode].color,
+                                            width=2,
+                                            activefill="green") #Point_List1[jNode].color
+            Widget_to_Node[_oval]= jNode
+            self.canvas.tag_bind(_oval,'<ButtonPress-1>',self.__showLinkInfo)
                 
                 #print "T1: ",jNode
                 #print "Follower: ",self.s.pAll[jNode].follower
-            else:
-                _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
-                                                self.s.pAll[jNode].y,
-                                                self.s.pAll[jNode].x + (self.Radius),
-                                                self.s.pAll[jNode].y + (self.Radius),
-                                                outline="black",width=2,
-                                                activefill="green",
-                                                fill="")#Point_List[jNode].color
+##            else:
+##                _oval = self.canvas.create_oval(self.s.pAll[jNode].x,
+##                                                self.s.pAll[jNode].y,
+##                                                self.s.pAll[jNode].x + (self.Radius),
+##                                                self.s.pAll[jNode].y + (self.Radius),
+##                                                outline="black",width=2,
+##                                                activefill="green",
+##                                                fill="")#Point_List[jNode].color
+                
             #if (100*lenFollower)/n1 >= self.p1:
 ##            for iNode in range(len(self.s.pAll[jNode].follower)):
 ##                
@@ -178,19 +180,17 @@ class Network:
         
     def __showLinkInfo(self,event):
 
-        print "sagar"
-        
-##        widget_id = event.widget.find_closest(event.x,event.y)
-##        jNode = Widget_to_Node[widget_id[0]]
-##        print jNode,self.s1.pAll[jNode].follower
-##        import nodebox_graph
-##        nbg.canvas = nbg.Canvas(width=640, height=480, name="NodeBox for OpenGL", resizable=False)
-##        nodebox_graph.create_graph(jNode,self.s1)
-##        nbg.canvas.clear
-##        #nbg.canvas.size = 700,700
-##        nbg.canvas.fullscreen = True
-##        nbg.canvas.run(nodebox_graph.draw)
-##        del nbg.canvas
+        widget_id = event.widget.find_closest(event.x,event.y)
+        jNode = Widget_to_Node[widget_id[0]]
+        #print jNode,self.s1.pAll[jNode].follower
+        #import nodebox_graph
+        nbg.canvas = nbg.Canvas(width=640, height=480, name="NodeBox for OpenGL", resizable=False)
+        nodebox_graph.create_graph(jNode,self.s1)
+        nbg.canvas.clear
+        #nbg.canvas.size = 700,700
+        nbg.canvas.fullscreen = True
+        nbg.canvas.run(nodebox_graph.draw)
+        del nbg.canvas
         
 ##        if widget_id[0]  <> 1:
 ##            pNode = self.nodeConverter(widget_id[0])

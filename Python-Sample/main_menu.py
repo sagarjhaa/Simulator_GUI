@@ -9,7 +9,7 @@ import tkFileDialog
 import shp_reader
 import dbfload as dbf
 from main_canvas import MainCanvas
-from scipy import stats
+#from scipy import stats
 import math
 
 #Sagar's Edit
