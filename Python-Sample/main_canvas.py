@@ -8,7 +8,7 @@ import random as rd
 from sag1 import point_inside_polygon
 
 # display parameters
-canvasWidth, canvasHeight,margin_x, margin_y  = 800, 600, 100, 100
+canvasWidth, canvasHeight,margin_x, margin_y  = 1800,950, 100, 100
 dict1 = {}
 class MainCanvas(object):
     """
@@ -38,7 +38,6 @@ class MainCanvas(object):
         self.root = root
         self.attributeName = attributeName
         self.datalist = datalist
-
         self.__createCanvas()
          
     def __createCanvas(self):
@@ -48,7 +47,13 @@ class MainCanvas(object):
         self.canvasRoot = Toplevel()
         self.canvasRoot.title(self.attributeName)
         self.canvasRoot.lower(belowThis = self.root)
-        self.mainCanvas = Canvas(self.canvasRoot, bg = 'black', width = canvasWidth+margin_x, height = canvasHeight+margin_y, scrollregion=('-50c','-50c',"50c","50c") )
+        self.mainCanvas = Canvas(self.canvasRoot, bg = 'black', width = canvasWidth+margin_x, height = canvasHeight+margin_y, scrollregion=('-50c','-50c',"50c","50c"))
+
+        #Change by Sagar for Full Screen
+        self.canvasRoot.state('zoomed')
+        self.canvasRoot.geometry=("1000x900+0+0")
+        #Change End
+        
         self.__drawShape()
         self.mainCanvas.pack()
         
@@ -130,8 +135,8 @@ class MainCanvas(object):
             xylist = []
             # loops through each point and calculate the window coordinates, put in xylist
             for point in polygon.points:
-                pointx = int((point.x -minX)*ratio) + +margin_x/2
-                pointy = int((maxY- point.y)*ratio) + +margin_y/2
+                pointx = int((point.x -minX)*ratio) + +margin_x/0.5
+                pointy = int((maxY- point.y)*ratio) + +margin_y/5
                 xylist.append(pointx)
                 xylist.append(pointy)
 ##            print xylist
@@ -175,14 +180,14 @@ class MainCanvas(object):
          
                 #Define a temporary list for holding the part coordinates
                 tempXYlist = []
-                tempXlist = []
-                tempYlist = []
+                tempXlist  = []
+                tempYlist  = []
                 #take out points' coordinates for the part and add to the temporary list
                 for m in range(polygon.partsIndex[k], endPointIndex):            
                     tempXYlist.append(xylist[m*2])
                     tempXYlist.append(xylist[m*2+1])
-                    tempXlist.append(xylist[m*2])
-                    tempYlist.append(xylist[m*2+1])
+                    tempXlist.append (xylist[m*2])
+                    tempYlist.append (xylist[m*2+1])
 
                 xMax = max(tempXlist)
                 xMin = min(tempXlist)
@@ -210,8 +215,8 @@ class MainCanvas(object):
                 
                 #Sagar Jha center added to calculate centroid of polygon
                 center = newPolygon.getCentroid()
-                xCenter = int((center.x -minX)*ratio) + +margin_x/2
-                yCenter = int((maxY- center.y)*ratio) + +margin_y/2
+                xCenter = int((center.x -minX)*ratio) + +margin_x/0.5
+                yCenter = int((maxY- center.y)*ratio) + +margin_y/5
                 
                 if area > 0:
                     _polygon = self.mainCanvas.create_polygon(tempXYlist,activefill="blue",fill=polygon.color,outline="blue",tags = self.datalist[tag_count])#creating our polygon outline
